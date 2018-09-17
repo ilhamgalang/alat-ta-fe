@@ -1,0 +1,65 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-1 navbar-dark primary-color-dark" [containerInside]="false">
+
+  <!-- Navbar brand -->
+  <mdb-navbar-brand>
+    <a class="navbar-brand" href="#">Navbar</a>
+  </mdb-navbar-brand>
+
+
+</mdb-navbar>
+<!--/.Navbar-->
+<div class="container">
+  <!-- Content here -->
+
+  <!-- Sign In -->
+  <form [formGroup]="loginForm" class="text-center border border-light p-5 wow slideInLeft" *ngIf="isSignIn == 1">
+    <p class="h4 mb-4">Sign in</p>
+  
+    <!-- Username -->
+    <input type="text" id="defaultLoginFormUsername" class="form-control mb-4" placeholder="Username" formControlName="username">
+    <!-- Password -->
+    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
+  
+    <!-- Sign in button -->
+    <button mdbBtn color="info" block="true" class="my-4" type="button" mdbWavesEffect>Sign in</button>
+  
+    <!-- Register -->
+    <p>Not a member?
+      <a href="#" (click)="setIsSignIn(0)">Register</a>
+    </p>  
+  </form>
+
+  <!-- Register -->
+  <form class="text-center border border-light p-5 wow slideInRight" *ngIf="isSignIn == 0">
+    <p class="h4 mb-4">Sign up</p>
+
+
+    <!-- Username -->
+    <input type="text" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username">
+    <!-- Name -->
+    <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Name">
+    <!-- Password -->
+    <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
+    <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
+      At least 8 characters and 1 digit
+    </small>
+
+    <!-- Sign up button -->
+    <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign up</button>
+    <!-- Back button -->
+    <button mdbBtn color="warning" block="true" class="my-4" type="button" (click)="setIsSignIn(1)">Back</button>
+
+  </form>
+</div>
+<!-- Footer -->
+<footer class="page-footer font-small blue">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2018 Copyright:
+    <a href="#"> Alat </a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->

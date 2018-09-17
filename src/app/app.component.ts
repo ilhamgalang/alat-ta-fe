@@ -11,7 +11,6 @@ export class AppComponent {
 
   public tes(): void {
     // ... save user email
-    console.log(email);
 	swal({
 	  title: 'Are you sure?',
 	  text: "You won't be able to revert this!",

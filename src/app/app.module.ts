@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormControlDirective } from '@angular/forms';
 
 // mdbbootstrap
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -8,13 +9,20 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, 
+    FormsModule, ReactiveFormsModule,
+    AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,
