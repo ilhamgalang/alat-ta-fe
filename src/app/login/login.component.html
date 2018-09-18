@@ -1,19 +1,18 @@
 <!--Navbar-->
 <mdb-navbar SideClass="navbar navbar-1 navbar-dark primary-color-dark mb-3" [containerInside]="false">
-
   <!-- Navbar brand -->
   <mdb-navbar-brand>
     <a class="navbar-brand" href="#">Navbar</a>
   </mdb-navbar-brand>
-
-
 </mdb-navbar>
 <!--/.Navbar-->
+
+
 <div class="container">
   <!-- Content here -->
 
   <!-- Sign In -->
-  <form [formGroup]="loginForm" (submit)="cekLogin()" class="text-center border border-light p-5 wow slideInLeft" *ngIf="isSignIn == 1">
+  <form [formGroup]="loginForm" (submit)="cekLogin()" class="text-center border border-light p-5 wow zoomIn" *ngIf="isSignIn == 1">
     <p class="h4 mb-4">Sign in</p>
   
     <!-- Username -->
@@ -22,33 +21,32 @@
     <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
   
     <!-- Sign in button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect>Sign in</button>
-  
+    <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Sign in</button>
+    
     <!-- Register -->
     <p>Not a member?
-      <a href="#" (click)="setIsSignIn(0)">Register</a>
+      <span class="blue-text" (click)="setIsSignIn(0)">Register</span>
     </p>  
   </form>
 
   <!-- Register -->
-  <form class="text-center border border-light p-5 wow slideInRight" *ngIf="isSignIn == 0">
+  <form [formGroup]="registerForm" (submit)="register()" class="text-center border border-light p-5 wow zoomIn" *ngIf="isSignIn == 0">
     <p class="h4 mb-4">Sign up</p>
 
-
     <!-- Username -->
-    <input type="text" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username">
+    <input type="text" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username" formControlName="username">
     <!-- Name -->
-    <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Name">
+    <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Name" formControlName="nama_user">
     <!-- Password -->
-    <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
+    <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="password">
     <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
       At least 8 characters and 1 digit
     </small>
 
     <!-- Sign up button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign up</button>
+    <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Sign up</button>
     <!-- Back button -->
-    <button mdbBtn color="warning" block="true" class="my-4" type="button" (click)="setIsSignIn(1)">Back</button>
+    <button mdbBtn color="warning" block="true" class="my-4" type="button" (click)="setIsSignIn(1); registerForm.reset()">Back</button>
 
   </form>
 </div>

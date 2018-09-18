@@ -48,4 +48,30 @@ export class NotifService {
     });
   }
 
+  warning(mtitle: any) {
+    const toast = swal['mixin']({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    toast({
+      type: 'warning',
+      title: mtitle
+    });
+  }
+
+  question(mtitle: any) {
+    const toast = swal['mixin']({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    toast({
+      type: 'question',
+      title: mtitle
+    });
+  }
+
 }

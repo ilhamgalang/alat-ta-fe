@@ -5,9 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 // mdbbootstrap
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
 // sweetalert2 - ngx
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+// ngx-spinner
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 // service
 import { ListApiService } from './service/list-api.service';
@@ -18,19 +19,22 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { NavigationComponent } from './navigation/navigation.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule, 
     FormsModule, ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgxSpinnerModule,
     MDBBootstrapModule.forRoot(),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,

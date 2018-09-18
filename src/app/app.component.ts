@@ -15,12 +15,10 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     if (typeof(Storage) !== undefined) {
-	  localStorage.clear();
       console.log('Code for localStorage/sessionStorage.');
       // cek apakah sebelumnya user pernah login
       if (localStorage.getItem('cIdUser') !== null) { // jika ya
       	// alihkan kehalaman yang terakhir di akses
-      	console.log(localStorage.getItem('cCurrentPath'));
         this.router.navigate([localStorage.getItem('cCurrentPath')]);
       } else {
       	// alihkan kehalaman login

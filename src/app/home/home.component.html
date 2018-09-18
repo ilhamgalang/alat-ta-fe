@@ -1,5 +1,34 @@
-<p>
-  home works!
+<app-navigation></app-navigation>
 
-    <button mdbBtn color="info" block="true" class="my-4" type="button" (click)="logout()" mdbWavesEffect>Log Out</button>
-</p>
+
+<div class="container">
+  <!-- Content here -->
+  
+  <blockquote class="blockquote bq-primary">
+    <p class="bq-title">My Device   
+      <button type="button" class="btn btn-success waves-light float-right" mdbWavesEffect><i class="fa fa-plus mr-1"></i> Add</button>
+    </p>
+  </blockquote>
+  
+  <div class="row ld-over pb-3" style="min-height: 200px;" [ngClass]="{'running':loadingDataDeviceOwned}">
+    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+    <div class="col-6" [ngClass]="{'d-none':loadingDataDeviceOwned}" *ngFor="let data of dataDeviceOwned; let i = index">
+      <!-- Card -->
+      <mdb-card>
+        <div class="view rgba-white-slight waves-light" mdbWavesEffect>
+          <!-- Card img -->
+          <mdb-card-img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Card image cap"></mdb-card-img>
+          <a> <div class="mask"></div> </a>
+        </div>
+        <!--Card content-->
+        <mdb-card-body>
+          <!--Title-->
+          <mdb-card-title class="card-title text-center text-capitalize"> <h5>{{ data.nama_alat }}</h5> </mdb-card-title>
+          <button mdbBtn color="success" block="true" type="button" *ngIf="data.status_on_off == 0" mdbWavesEffect>On</button>
+          <button mdbBtn color="danger" block="true" type="button" *ngIf="data.status_on_off == 1" mdbWavesEffect>Off</button>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+  </div>
+
+</div>
