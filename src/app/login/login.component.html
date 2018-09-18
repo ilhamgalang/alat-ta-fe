@@ -1,5 +1,5 @@
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-1 navbar-dark primary-color-dark" [containerInside]="false">
+<mdb-navbar SideClass="navbar navbar-1 navbar-dark primary-color-dark mb-3" [containerInside]="false">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand>
@@ -13,7 +13,7 @@
   <!-- Content here -->
 
   <!-- Sign In -->
-  <form [formGroup]="loginForm" class="text-center border border-light p-5 wow slideInLeft" *ngIf="isSignIn == 1">
+  <form [formGroup]="loginForm" (submit)="cekLogin()" class="text-center border border-light p-5 wow slideInLeft" *ngIf="isSignIn == 1">
     <p class="h4 mb-4">Sign in</p>
   
     <!-- Username -->
@@ -22,7 +22,7 @@
     <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
   
     <!-- Sign in button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="button" mdbWavesEffect>Sign in</button>
+    <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect>Sign in</button>
   
     <!-- Register -->
     <p>Not a member?
@@ -53,7 +53,7 @@
   </form>
 </div>
 <!-- Footer -->
-<footer class="page-footer font-small blue">
+<footer class="page-footer font-small blue mt-3">
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2018 Copyright:
