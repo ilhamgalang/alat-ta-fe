@@ -15,11 +15,16 @@
   <form [formGroup]="loginForm" (submit)="cekLogin()" class="text-center border border-light p-5 wow zoomIn" *ngIf="isSignIn == 1">
     <p class="h4 mb-4">Sign in</p>
   
-    <!-- Username -->
-    <input type="text" id="defaultLoginFormUsername" class="form-control mb-4" placeholder="Username" formControlName="username">
+    <!-- Username -->  
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="text" id="defaultLoginFormUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
+      <label for="defaultLoginFormUsername" class="">Username</label>
+    </div>
     <!-- Password -->
-    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" formControlName="password">
-  
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="password" id="defaultLoginFormPassword" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
+      <label for="defaultLoginFormPassword" class="">Password</label>
+    </div>
     <!-- Sign in button -->
     <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Sign in</button>
     <!-- Register -->
@@ -33,14 +38,20 @@
     <p class="h4 mb-4">Sign up</p>
 
     <!-- Username -->
-    <input type="text" id="defaultRegisterFormUsername" class="form-control mb-4" placeholder="Username" formControlName="username">
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="text" id="defaultRegisterFormUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
+      <label for="defaultRegisterFormUsername" class="">Username</label>
+    </div>
     <!-- Name -->
-    <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Name" formControlName="nama_user">
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="text" id="defaultRegisterFormFirstName" class="form-control form-control-sm" data-error="-" data-success="-" formControlName="nama_user">
+      <label for="defaultRegisterFormFirstName" class="">Name</label>
+    </div>
     <!-- Password -->
-    <input type="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" formControlName="password">
-    <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
-      At least 8 characters and 1 digit
-    </small>
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="password" id="defaultRegisterFormPassword" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
+      <label for="defaultRegisterFormPassword" class="">Password</label>
+    </div>
 
     <!-- Sign up button -->
     <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Sign up</button>

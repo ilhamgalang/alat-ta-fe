@@ -1,15 +1,16 @@
 <app-navigation></app-navigation>
 
-
-<div class="container">
+<div class="container" *ngIf="!isAddDevice">
   <!-- Content here -->
   
-  <blockquote class="blockquote bq-primary">
+  <blockquote class="blockquote bq-info">
     <p class="bq-title">My Device   
-      <button type="button" class="btn btn-success waves-light float-right" mdbWavesEffect><i class="fa fa-plus mr-1"></i> Add</button>
     </p>
   </blockquote>
-  
+  <button type="button" class="btn btn-success waves-light" (click)="setIsAddDevice(true)" mdbWavesEffect><i class="fa fa-plus mr-1"></i> Add New Device</button>
+
+  <hr class="my-3">
+
   <div class="row ld-over pb-3" style="min-height: 200px;" [ngClass]="{'running':loadingDataDeviceOwned}">
     <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
     <div class="col-6" [ngClass]="{'d-none':loadingDataDeviceOwned}" *ngFor="let data of dataDeviceOwned; let i = index">
@@ -24,11 +25,36 @@
         <mdb-card-body>
           <!--Title-->
           <mdb-card-title class="card-title text-center text-capitalize"> <h5>{{ data.nama_alat }}</h5> </mdb-card-title>
-          <button mdbBtn color="success" block="true" type="button" *ngIf="data.status_on_off == 0" mdbWavesEffect>On</button>
-          <button mdbBtn color="danger" block="true" type="button" *ngIf="data.status_on_off == 1" mdbWavesEffect>Off</button>
+          <button mdbBtn color="success" block="true" type="button" *ngIf="data.status_on_off == 0" (click)="updateOnOff(data.id_alat, 1)" mdbWavesEffect>On</button>
+          <button mdbBtn color="danger" block="true" type="button" *ngIf="data.status_on_off == 1" (click)="updateOnOff(data.id_alat, 0)" mdbWavesEffect>Off</button>
         </mdb-card-body>
       </mdb-card>
     </div>
   </div>
+
+</div>
+
+<div class="container" *ngIf="isAddDevice">
+
+<!-- form Add New Device -->
+  <form class="text-center border border-light p-5 wow zoomIn" [formGroup]="addNewDeviceForm" (submit)="addNewDevice()">
+
+    <p class="h4 mb-4">Add New Device</p>
+
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="text" id="addIdDevice" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="id_alat">
+      <label for="addIdDevice" class="">Id Device</label>
+    </div>
+    <div class="md-form form-sm">
+      <input mdbInputDirective type="password" id="addPasswordDevice" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
+      <label for="addPasswordDevice" class="">Password</label>
+    </div>
+
+    <!-- Add button -->
+    <button mdbBtn color="info" block="true" class="my-4" type="submit"><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Add</button>
+    <!-- Cancel button -->
+    <button mdbBtn color="warning" block="true" class="my-4" (click)="setIsAddDevice(false); getDataDeviceOwned()" type="button">Cancel</button>
+
+  </form>
 
 </div>

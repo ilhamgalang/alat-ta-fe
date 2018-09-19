@@ -8,11 +8,14 @@ import { Router } from '@angular/router';
 })
 export class NavigationComponent implements OnInit {
 
+  currentPath: string;
+
   constructor(
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.currentPath = localStorage.getItem('cCurrentPath');
   }
   
   logout() {

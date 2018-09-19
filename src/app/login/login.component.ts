@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     // register form
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
-      nama_user: ['', Validators.required],
+      nama_user: [''],
       password: ['', Validators.required]
     });
   }
@@ -53,31 +53,39 @@ export class LoginComponent implements OnInit {
   cekLogin() {
     // spinner aktif
     this.spinner.show();
-    // proses login
-    this.api.cekLogin(this.loginForm.value).subscribe(response => {
-      // jika berhasil login
-      if (response.status == 1) {
-        // membuat local storage dengan id_user
-        localStorage.setItem('cIdUser', response.data[0].id_user);
+    // cek validasi apakah username dan password tidak kosong
+    if (this.loginForm.value.username !== '' && this.loginForm.value.username !== null && this.loginForm.value.password !== '' && this.loginForm.value.password !== null) {
+      // proses login
+      this.api.cekLogin(this.loginForm.value).subscribe(response => {
+        // jika berhasil login
+        if (response.status == 1) {
+          // membuat local storage dengan id_user
+          localStorage.setItem('cIdUser', response.data[0].id_user);
+          // spinner mati
+          this.spinner.hide();
+          // pindah halaman ke home
+          this.router.navigate(['home']);
+        } else { // jika gagal login
+          // spinner mati
+          this.spinner.hide();
+          // notif gagal
+          this.notif.error('Username or Password Incorrect!');
+          // reset form
+          this.loginForm.reset();
+        }
+      }, error => {
+        console.log(error);
         // spinner mati
         this.spinner.hide();
-        // pindah halaman ke home
-        this.router.navigate(['home']);
-      } else { // jika gagal login
-        // spinner mati
-        this.spinner.hide();
-        // notif gagal
-        this.notif.error('Username or Password Incorrect!');
-        // reset form
-        this.loginForm.reset();
-      }
-    }, error => {
-      console.log(error);
+        // notif error
+        this.notif.error(error.message);
+      });
+    }else { // jika kosong
+      // beri notif
+      this.notif.error('Username and password can\'t empty!');
       // spinner mati
       this.spinner.hide();
-      // notif error
-      this.notif.error(error.message);
-    });
+    }
   }
 
   // proses register user
@@ -115,7 +123,7 @@ export class LoginComponent implements OnInit {
       });
     } else { // jika kosong
       // beri notif
-      this.notif.error('username and pasword can\'t empty!');
+      this.notif.error('Username and password can\'t empty!');
       // spinner mati
       this.spinner.hide();
     }

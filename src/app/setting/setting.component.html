@@ -1,0 +1,42 @@
+<app-navigation></app-navigation>
+
+<ngx-spinner size="medium" type="line-scale-pulse-out"></ngx-spinner>
+<div class="container">
+
+  <blockquote class="blockquote bq-info">
+    <p class="bq-title">Setting</p>
+  </blockquote>  
+
+  <div class="row ld-over" [ngClass]="{'running':loadingDataDeviceSelect}">
+    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+    <div class="col" [ngClass]="{'d-none':loadingDataDeviceSelect}">
+      <label>Select : </label>
+      <select #selectOwnerDevice class="browser-default custom-select mb-3" (change)="getDataDeviceForSelect(selectOwnerDevice.value)">
+        <option value="1" selected>My Device</option>
+        <option value="2">Device Shared With Me</option>
+      </select>
+    
+      <select #selectIdDevice class="browser-default custom-select mb-4" (change)="getDataDevice(selectIdDevice.value)">
+        <option value="0">---</option>
+        <option *ngFor="let data of dataDeviceForSelect.data; let i = index" value="{{data.id_alat}}">{{data.nama_alat}}</option>
+      </select>    
+    </div>
+  </div>
+
+  <div class="row ld-over" style="min-height: 200px;" [ngClass]="{'running':loadingdataDevice}" *ngIf="selectIdDevice.value != 0">
+    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+    <div class="col">
+      <swal
+        #deleteSwal
+        title="Are you sure?"
+        text="You won't be able to revert this!"
+        type="question"
+        [showCancelButton]="true"
+        [focusCancel]="true"
+        (confirm)="deleteDeviceFromUser(dataDevice.data[0].id_alat)">
+      </swal>
+      <button mdbBtn color="danger" block="true" type="button" mdbWavesEffect [swal]="deleteSwal">Delete This Device</button>
+    </div>
+  </div>
+
+</div>

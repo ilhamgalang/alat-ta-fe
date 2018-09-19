@@ -20,6 +20,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { SettingComponent } from './setting/setting.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { NavigationComponent } from './navigation/navigation.component';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    NavigationComponent
+    NavigationComponent,
+    SettingComponent
   ],
   imports: [
     BrowserModule, 

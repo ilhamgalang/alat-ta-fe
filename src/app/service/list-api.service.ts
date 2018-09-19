@@ -16,13 +16,14 @@ export class ListApiService {
 
   constructor(private http: HttpClient) { }
 
-  private api = 'http://192.168.1.7:69/tugas_akhir/alat/';
+  private api = 'http://192.168.1.5:69/tugas_akhir/alat/';
 
+  // Tabel User
 	// cek data for login (user)
 	cekLogin(data: Object): Observable<any> {
-	    let result: Observable<Object>;
-	        result = this.http.post(this.api + 'user/cekLogin', data);
-	    return result;
+    let result: Observable<Object>;
+        result = this.http.post(this.api + 'user/cekLogin', data);
+    return result;
   }
   
   // register
@@ -32,10 +33,59 @@ export class ListApiService {
     return result;
   }
 
-  // getDataDevice
+
+  // Tabel UserAlat
+  // get Data Device by user
   getDataOwnedShared(id: string, level: string, primary: string): Observable<any> {
     let result: Observable<Object>;
-        result = this.http.get(this.api + 'UserAlat/getDataOwnedShared?' + primary + '=' + id + '&status_level=' + level);
+        result = this.http.get(this.api + 'UserAlat/getDataOwnedShared?' + primary + '=' + id + '&level=' + level);
     return result;  
   }
+
+  // add new device
+  addNewDevice(data: Object): Observable<any> {
+    let result: Observable<Object>;
+        result = this.http.post(this.api + 'userAlat/create/add', data);
+    return result;
+  }
+
+  // delete device from user
+  deleteDeviceFromUser(id: string): Observable<any> {
+    let result: Observable<Object>;
+        result = this.http.delete(this.api + 'userAlat/delete/' + id, httpOptions);
+    return result;
+  }
+
+
+  // Tabel StatusAlat
+	// cek data for new device
+	cekAddDevice(data: Object): Observable<any> {
+	    let result: Observable<Object>;
+	        result = this.http.post(this.api + 'statusAlat/cekLogin', data);
+	    return result;
+  }
+
+  // cek data device by id
+  getDataDeviceById(id: string): Observable<any> {
+      let result: Observable<Object>;
+          result = this.http.get(this.api + 'statusAlat/read?id_alat=' + id);
+      return result;
+  }
+
+  // update on off
+  updateOnOff(primary: string, data: Object): Observable<any> {
+    let result: Observable<Object>;
+        result = this.http.post(this.api + 'StatusAlat/update/' + primary, data);
+    return result;
+  }
+  
+
+  // tabel record
+  // tambah record
+  addRecord(data: Object): Observable<any> {
+    let result: Observable<Object>;
+      result = this.http.post(this.api + 'record/create', data);
+    return result;
+  }
+  
 }
