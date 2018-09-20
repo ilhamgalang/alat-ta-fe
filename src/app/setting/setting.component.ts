@@ -13,12 +13,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./setting.component.scss']
 })
 export class SettingComponent implements OnInit {
-
   dataDeviceForSelect: Object = {};
-  loadingDataDeviceSelect: boolean = true; // tampilkan loading sampai data diterima
+  loadingDataDeviceSelect = true; // tampilkan loading sampai data diterima
 
   dataDevice: Object = {};
-  loadingdataDevice: boolean = false; // tampilkan loading sampai data diterima
+  loadingdataDevice = false; // tampilkan loading sampai data diterima
 
   constructor(
     private router: Router,
@@ -26,7 +25,7 @@ export class SettingComponent implements OnInit {
     private fb: FormBuilder,
     private notif: NotifService,
     private spinner: NgxSpinnerService
-  ) { }
+  ) {}
 
   ngOnInit() {
     // set current path
@@ -37,38 +36,46 @@ export class SettingComponent implements OnInit {
 
   // get data device untuk select
   getDataDeviceForSelect(select: any) {
-    this.api.getDataOwnedShared(localStorage.getItem('cIdUser'), select, 'id_user').subscribe(response => {
-      this.dataDeviceForSelect = response;
-      // loading mati
-      this.loadingDataDeviceSelect = false;
-    }, error => {
-      console.log(error);
-      // notif error
-      this.notif.error(error.message);
-      // loading mati
-      this.loadingDataDeviceSelect = false;
-    });
+    this.api
+      .getDataOwnedShared(localStorage.getItem('cIdUser'), select, 'id_user')
+      .subscribe(
+        response => {
+          this.dataDeviceForSelect = response;
+          // loading mati
+          this.loadingDataDeviceSelect = false;
+        },
+        error => {
+          console.log(error);
+          // notif error
+          this.notif.error(error.message);
+          // loading mati
+          this.loadingDataDeviceSelect = false;
+        }
+      );
   }
 
   // get data device by id
   getDataDevice(id: any) {
     // loading on
     this.loadingdataDevice = true;
-	const data = {
-	  id_alat: id,
-	  id_user: localStorage.getItem('cIdUser')
-	}
-    this.api.getDataDeviceSetting(data).subscribe(response => {
-      this.dataDevice = response;
-      // loading mati
-      this.loadingdataDevice = false;
-    }, error => {
-      console.log(error);
-      // notif error
-      this.notif.error(error.message);
-      // loading mati
-      this.loadingdataDevice = false;
-    });
+    const data = {
+      id_alat: id,
+      id_user: localStorage.getItem('cIdUser')
+    };
+    this.api.getDataDeviceSetting(data).subscribe(
+      response => {
+        this.dataDevice = response;
+        // loading mati
+        this.loadingdataDevice = false;
+      },
+      error => {
+        console.log(error);
+        // notif error
+        this.notif.error(error.message);
+        // loading mati
+        this.loadingdataDevice = false;
+      }
+    );
   }
 
   // delete device from user
@@ -76,20 +83,22 @@ export class SettingComponent implements OnInit {
     // spinner on
     this.spinner.show();
     // proses delete
-    this.api.deleteDeviceFromUser(id).subscribe(response => {
-	  // refresh select
-      this.getDataDeviceForSelect('1');
-	  // notif 
-      this.notif.success(response.message);
-      // spinner off
-      this.spinner.hide();
-    }, error => {
-      console.log(error);
-      // notif error
-      this.notif.error(error.message);
-      // spinner off
-      this.spinner.hide();
-    });
+    this.api.deleteDeviceFromUser(id).subscribe(
+      response => {
+        // refresh select
+        this.getDataDeviceForSelect('1');
+        // notif
+        this.notif.success(response.message);
+        // spinner off
+        this.spinner.hide();
+      },
+      error => {
+        console.log(error);
+        // notif error
+        this.notif.error(error.message);
+        // spinner off
+        this.spinner.hide();
+      }
+    );
   }
-
 }

@@ -17,6 +17,9 @@
       <li class="nav-item" [ngClass]="{'active':currentPath == 'setting'}">
         <a class="nav-link waves-light" routerLink="/setting" mdbWavesEffect>Setting</a>
       </li>
+      <li class="nav-item" [ngClass]="{'active':currentPath == 'record'}">
+        <a class="nav-link waves-light" routerLink="/record" mdbWavesEffect>Record</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link waves-light" (click)="logout()" mdbWavesEffect>Log out</a>
       </li>

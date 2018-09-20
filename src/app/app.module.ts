@@ -9,6 +9,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 // ngx-spinner
 import { NgxSpinnerModule } from 'ngx-spinner';
+// ngx datatable
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 // service
 import { ListApiService } from './service/list-api.service';
@@ -21,6 +23,8 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { SettingComponent } from './setting/setting.component';
+import { RecordComponent } from './record/record.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -29,7 +33,9 @@ import { SettingComponent } from './setting/setting.component';
     LoginComponent,
     HomeComponent,
     NavigationComponent,
-    SettingComponent
+    SettingComponent,
+    RecordComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule, 
@@ -37,6 +43,7 @@ import { SettingComponent } from './setting/setting.component';
     HttpClientModule,
     AppRoutingModule,
     NgxSpinnerModule,
+	NgxDatatableModule,
     MDBBootstrapModule.forRoot(),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,

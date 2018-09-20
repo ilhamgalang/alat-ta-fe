@@ -158,7 +158,8 @@ export class HomeComponent implements OnInit {
               const addRecord = {
                 id_user: localStorage.getItem('cIdUser'),
                 id_alat: renponse.data[0].id_alat,
-                turn_on_off: isOnOff
+                turn_on_off: isOnOff,
+				is_new_record: 1
               }
               // proses add record
               this.api.addRecord(addRecord).subscribe(renponseAddRecord => {

@@ -1,0 +1,104 @@
+<app-navigation></app-navigation>
+
+<div class="container">
+
+  <blockquote class="blockquote bq-info">
+    <p class="bq-title">Record</p>
+  </blockquote> 
+  
+	<div class="row mb-3" *ngIf="!loadingDataStatistik">
+		<div class="col">		
+			<div>
+				<h3>
+				Data Statistik
+				</h3>
+				<ngx-datatable
+				class="material"
+				[rows]="dataStatistik.data"
+				[columnMode]="'force'"
+				[headerHeight]="50"
+				[footerHeight]="'auto'"
+				[rowHeight]="'auto'"
+				[limit]="5">
+				<ngx-datatable-column name="Device">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+						{{ row.nama_alat }}
+					</ng-template>
+				</ngx-datatable-column>
+				<ngx-datatable-column name="Time Duration">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+						{{ row.time_duration }}
+					</ng-template>
+				</ngx-datatable-column>
+				<ngx-datatable-column name="Action">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+						<button mdbBtn type="button" color="info" size="sm" class="waves-light" mdbWavesEffect>Details</button>						
+					</ng-template>
+				</ngx-datatable-column>
+				</ngx-datatable>
+			</div>
+		</div>
+	</div> 
+  
+  <div class="row mb-3" *ngIf="!loadingDataRecord">
+		<div class="col">		
+			<div>
+				<h3>
+				Data Record
+				</h3>
+				<ngx-datatable
+				class="material"
+				[rows]="dataRecord.data"
+				[columnMode]="'force'"
+				[headerHeight]="50"
+				[footerHeight]="100"
+				[rowHeight]="'auto'"
+				[limit]="10">
+				<ngx-datatable-column name="User">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+					{{ row.nama_user }}
+					</ng-template>
+				</ngx-datatable-column>
+				<ngx-datatable-column name="Device">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+					{{ row.nama_alat }}
+					</ng-template>
+				</ngx-datatable-column>
+				<ngx-datatable-column name="Status">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+					<button mdbBtn *ngIf="row.turn_on_off == 1" type="button" color="success" size="sm" class="waves-light" mdbWavesEffect>On</button>
+					<button mdbBtn *ngIf="row.turn_on_off == 0" type="button" color="danger" size="sm" class="waves-light" mdbWavesEffect>Off</button>
+					</ng-template>
+				</ngx-datatable-column>
+				<ngx-datatable-column name="Time">
+					<ng-template let-column="column" ngx-datatable-header-template>
+					{{ column.name }}
+					</ng-template>
+					<ng-template let-row="row" ngx-datatable-cell-template>
+					{{ row.time }}
+					</ng-template>
+				</ngx-datatable-column>
+				</ngx-datatable>
+			</div>
+		</div>
+ 	</div>
+  
+</div>
