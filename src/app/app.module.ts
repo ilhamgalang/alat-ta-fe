@@ -11,6 +11,11 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { NgxSpinnerModule } from 'ngx-spinner';
 // ngx datatable
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+// ngx-material-timepicker
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+// animation material design
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 
 // service
 import { ListApiService } from './service/list-api.service';
@@ -43,7 +48,10 @@ import { FooterComponent } from './footer/footer.component';
     HttpClientModule,
     AppRoutingModule,
     NgxSpinnerModule,
-	NgxDatatableModule,
+    NgxDatatableModule,
+    BrowserAnimationsModule,
+    MatButtonModule, MatCheckboxModule,
+    NgxMaterialTimepickerModule.forRoot(),
     MDBBootstrapModule.forRoot(),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,

@@ -8,5 +8,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ## Tugas Akhir
 
+- v0.11.1 => add material design
+- v0.10.4 => add ngx data-table
+- v0.10.3 => add loading on proses
+- v0.10.2 => add sweet alert2
 - v0.10.1 => add mdbbootstrap/angular
 - v.0.10.0 => create angular project
