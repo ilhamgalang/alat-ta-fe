@@ -33,7 +33,7 @@
         type="question"
         [showCancelButton]="true"
         [focusCancel]="true"
-        (confirm)="deleteDeviceFromUser(dataDevice.data[0].id_user_alat, dataDevice.data[0].id_alat)">
+        (confirm)="deleteDeviceFromUser(dataDevice.data[0].id_user_alat)">
       </swal>
       <button mdbBtn color="danger" block="true" type="button" mdbWavesEffect [swal]="deleteSwal">Delete This Device</button>
     </div>

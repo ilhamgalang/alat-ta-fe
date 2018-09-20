@@ -79,16 +79,14 @@ export class SettingComponent implements OnInit {
   }
 
   // delete device from user
-  deleteDeviceFromUser(idUserAlat: string, idAlat: string) {
+  deleteDeviceFromUser(id: string) {
     // spinner on
     this.spinner.show();
     // proses delete
-    this.api.deleteDeviceFromUser(idUserAlat).subscribe(
+    this.api.deleteDeviceFromUser(id).subscribe(
       response => {
         // refresh select
         this.getDataDeviceForSelect('1');
-        // update device menjadi mati
-        this.updateDeviceToOff(idAlat);
         // notif
         this.notif.success(response.message);
         // spinner off
@@ -102,61 +100,5 @@ export class SettingComponent implements OnInit {
         this.spinner.hide();
       }
     );
-  }
-
-  // update status lampu yang di hapus menjadi off
-  updateDeviceToOff(id: string) {
-    // set variabel 0
-    const isOnOff = 0;
-    // cek data device by id
-    this.api.getDataDeviceById(id).subscribe(response => {
-      console.log(response);
-      // jika lampu dalam status menyala
-      if (response.data[0].status_on_off == 1) {
-        // variabel untuk update
-        const data = {
-          id_alat: response.data[0].id_alat,
-          status_on_off: isOnOff,
-          waktu_on: response.data[0].waktu_on,
-          waktu_off: response.data[0].waktu_off,
-          is_on: response.data[0].is_on,
-          is_off: response.data[0].is_off,
-          nama_alat: response.data[0].nama_alat
-        }
-        // proses update
-        this.api.updateOnOff('id_alat', data).subscribe(responseUpdate => {
-          // jika proses berhasil
-          if (responseUpdate.status == 1) {
-            // tambahkan action ke record
-              // variabel record
-              const addRecord = {
-                id_user: localStorage.getItem('cIdUser'),
-                id_alat: response.data[0].id_alat,
-                turn_on_off: isOnOff,
-				        is_new_record: 1
-              }
-              // proses add record
-              this.api.addRecord(addRecord).subscribe(renponseAddRecord => {
-                // success record
-              }, error => {
-                console.log(error);
-                // notif error
-                this.notif.error(error.message);
-              });
-          } else { // jika update gagal
-            // notif error
-            this.notif.error(responseUpdate.message);
-          }
-        }, error => {
-          console.log(error);
-          // notif error
-          this.notif.error(error.message);
-        })
-      }
-    }, error => {
-      console.log(error);
-      // notif error
-      this.notif.error(error.message);
-    });
   }
 }
