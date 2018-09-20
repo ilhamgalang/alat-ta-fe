@@ -16,7 +16,7 @@ export class ListApiService {
 
   constructor(private http: HttpClient) { }
 
-  private api = 'http://192.168.1.5:69/tugas_akhir/alat/';
+  private api = 'http://10.10.10.25:69/tugas_akhir/alat/';
 
   // Tabel User
 	// cek data for login (user)
@@ -54,6 +54,13 @@ export class ListApiService {
     let result: Observable<Object>;
         result = this.http.delete(this.api + 'userAlat/delete/' + id, httpOptions);
     return result;
+  }
+  
+  // get data device untuk setting
+  getDataDeviceSetting(data: Object): Observable<any> {
+	let result: Observable<Object>;
+		result = this.http.post(this.api + 'UserAlat/getDataDeviceSetting', data);
+	return result;
   }
 
 

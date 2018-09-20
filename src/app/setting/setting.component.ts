@@ -54,7 +54,11 @@ export class SettingComponent implements OnInit {
   getDataDevice(id: any) {
     // loading on
     this.loadingdataDevice = true;
-    this.api.getDataDeviceById(id).subscribe(response => {
+	const data = {
+	  id_alat: id,
+	  id_user: localStorage.getItem('cIdUser')
+	}
+    this.api.getDataDeviceSetting(data).subscribe(response => {
       this.dataDevice = response;
       // loading mati
       this.loadingdataDevice = false;
@@ -73,7 +77,9 @@ export class SettingComponent implements OnInit {
     this.spinner.show();
     // proses delete
     this.api.deleteDeviceFromUser(id).subscribe(response => {
-      // notif 
+	  // refresh select
+      this.getDataDeviceForSelect('1');
+	  // notif 
       this.notif.success(response.message);
       // spinner off
       this.spinner.hide();
