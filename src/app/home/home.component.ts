@@ -125,9 +125,9 @@ export class HomeComponent implements OnInit {
   // update tombol on off
   updateOnOff(id: string, isOnOff: number) {
     // cek data device by id
-    this.api.getDataDeviceById(id).subscribe(renponse => {
+    this.api.getDataDeviceById(id).subscribe(response => {
       // jika data (on off) device dan action user sama
-      if (renponse.data[0].status_on_off == isOnOff) {
+      if (response.data[0].status_on_off == isOnOff) {
         if (isOnOff == 0) {  // jika device sudah off
           // notif
           this.notif.info('Device Already Off!');
@@ -139,13 +139,13 @@ export class HomeComponent implements OnInit {
       } else { // jika tidak
         // variabel untuk update
         const data = {
-          id_alat: renponse.data[0].id_alat,
+          id_alat: response.data[0].id_alat,
           status_on_off: isOnOff,
-          waktu_on: renponse.data[0].waktu_on,
-          waktu_off: renponse.data[0].waktu_off,
-          is_on: renponse.data[0].is_on,
-          is_off: renponse.data[0].is_off,
-          nama_alat: renponse.data[0].nama_alat
+          waktu_on: response.data[0].waktu_on,
+          waktu_off: response.data[0].waktu_off,
+          is_on: response.data[0].is_on,
+          is_off: response.data[0].is_off,
+          nama_alat: response.data[0].nama_alat
         }
         // proses update
         this.api.updateOnOff('id_alat', data).subscribe(responseUpdate => {
@@ -157,9 +157,9 @@ export class HomeComponent implements OnInit {
               // variabel record
               const addRecord = {
                 id_user: localStorage.getItem('cIdUser'),
-                id_alat: renponse.data[0].id_alat,
+                id_alat: response.data[0].id_alat,
                 turn_on_off: isOnOff,
-				is_new_record: 1
+				        is_new_record: 1
               }
               // proses add record
               this.api.addRecord(addRecord).subscribe(renponseAddRecord => {

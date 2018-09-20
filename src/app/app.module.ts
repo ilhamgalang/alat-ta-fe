@@ -11,11 +11,14 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { NgxSpinnerModule } from 'ngx-spinner';
 // ngx datatable
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-// ngx-material-timepicker
+//time picker -> material
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-// animation material design
+// material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 // service
 import { ListApiService } from './service/list-api.service';
@@ -48,17 +51,20 @@ import { FooterComponent } from './footer/footer.component';
     HttpClientModule,
     AppRoutingModule,
     NgxSpinnerModule,
-    NgxDatatableModule,
-    BrowserAnimationsModule,
-    MatButtonModule, MatCheckboxModule,
-    NgxMaterialTimepickerModule.forRoot(),
+	  NgxDatatableModule,
     MDBBootstrapModule.forRoot(),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,
       customClass: 'modal-content',
       confirmButtonClass: 'btn btn-success',
       cancelButtonClass: 'btn btn-danger'
-    })
+    }),
+    NgxMaterialTimepickerModule.forRoot(),
+    BrowserAnimationsModule,
+    MatButtonModule, MatCheckboxModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [ListApiService, NotifService],
   bootstrap: [AppComponent],
