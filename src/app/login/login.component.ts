@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
           // spinner mati
           this.spinner.hide();
           // notif gagal
-          this.notif.error('Username or Password Incorrect!');
+          this.notif.error('Username or Password is incorrect!');
           // reset form
           this.loginForm.reset();
         }
@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
       });
     }else { // jika kosong
       // beri notif
-      this.notif.error('Username and password can\'t empty!');
+      this.notif.error('Username and password cannot be empty!');
       // spinner mati
       this.spinner.hide();
     }
@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
       });
     } else { // jika kosong
       // beri notif
-      this.notif.error('Username and password can\'t empty!');
+      this.notif.error('Username and password cannot be empty!');
       // spinner mati
       this.spinner.hide();
     }

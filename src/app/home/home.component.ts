@@ -43,8 +43,11 @@ export class HomeComponent implements OnInit {
     this.getDataDeviceOwned();
   }
 
+  // set nilai untuk menampilkan atau menyembunyikan form add new device
   setIsAddDevice(state: boolean) {
     this.isAddDevice = state;
+    // reset form add new device
+    this.addNewDeviceForm.reset();
   }
 
   // get Data Device Owned
@@ -79,7 +82,7 @@ export class HomeComponent implements OnInit {
             level: 1
           };
           // proses tambah
-          this.api.addNewDevice(data).subscribe(responseAdd => {
+          this.api.addOrShareDevice(data).subscribe(responseAdd => {
             // cek apakah proses tambah berhasil dan tidak di gunakan oleh user lain
             if (responseAdd.status == 1) { // jika ya
               // refresh get data device

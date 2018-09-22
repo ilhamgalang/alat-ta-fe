@@ -84,8 +84,8 @@
 					{{ column.name }}
 					</ng-template>
 					<ng-template let-row="row" ngx-datatable-cell-template>
-					<button mdbBtn *ngIf="row.turn_on_off == 1" type="button" color="success" size="sm" class="waves-light" mdbWavesEffect>On</button>
-					<button mdbBtn *ngIf="row.turn_on_off == 0" type="button" color="danger" size="sm" class="waves-light" mdbWavesEffect>Off</button>
+						<div class="font-weight-bold green-text" *ngIf="row.turn_on_off == 1">Turn ON</div>	
+						<div class="font-weight-bold red-text" *ngIf="row.turn_on_off == 0">Turn OFF</div>	
 					</ng-template>
 				</ngx-datatable-column>
 				<ngx-datatable-column name="Time">

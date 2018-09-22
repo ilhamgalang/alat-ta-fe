@@ -14,6 +14,7 @@ const httpOptions = {
 export class ListApiService {
   constructor(private http: HttpClient) {}
 
+  // alamat (back end)
   private api = 'http://192.168.1.6:69/tugas_akhir/alat-v0.10/';
 
   // Tabel User
@@ -28,6 +29,13 @@ export class ListApiService {
   registerUser(data: Object): Observable<any> {
     let result: Observable<Object>;
     result = this.http.post(this.api + 'user/create', data);
+    return result;
+  }
+
+  // get data user by username
+  getDataUser(username: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.get(this.api + 'user/getDataUser?username=' + username);
     return result;
   }
 
@@ -52,9 +60,9 @@ export class ListApiService {
   }
 
   // add new device
-  addNewDevice(data: Object): Observable<any> {
+  addOrShareDevice(data: Object): Observable<any> {
     let result: Observable<Object>;
-    result = this.http.post(this.api + 'userAlat/create/add', data);
+    result = this.http.post(this.api + 'userAlat/create', data);
     return result;
   }
 

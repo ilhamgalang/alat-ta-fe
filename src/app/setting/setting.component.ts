@@ -15,6 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class SettingComponent implements OnInit {
   dataDeviceForSelect: Object = {};
   loadingDataDeviceSelect = true; // tampilkan loading sampai data diterima
+  stateStatusSelect: any = 0; // status select untuk menampilkan dan menutup informasi device
 
   dataDevice: Object = {};
   loadingdataDevice = false; // tampilkan loading sampai data diterima
@@ -23,6 +24,11 @@ export class SettingComponent implements OnInit {
   selectStatusTimeOff: boolean;
 
   deviceForm: FormGroup;
+
+  dataShareDevice: Object;
+  shareDeviceForm: FormGroup;
+  isShareDevice: boolean = false;
+  loadingDataDeviceShared: boolean = false;
 
   constructor(
     private router: Router,
@@ -45,10 +51,20 @@ export class SettingComponent implements OnInit {
       is_on: [''],
       is_off: ['']
     });
+    // share device form
+    this.shareDeviceForm = this.fb.group({
+      nama_alat: [''],
+      username: ['', Validators.required]     
+    });
   }
 
   // get data device untuk select
   getDataDeviceForSelect(select: any) {
+    // reset nilai select Device
+    this.stateStatusSelect = 0;
+    // sembunyikan form share
+    this.isShareDevice = false;
+    // proses get informasi device
     this.api
       .getDataOwnedShared(localStorage.getItem('cIdUser'), select, 'id_user')
       .subscribe(
@@ -71,6 +87,9 @@ export class SettingComponent implements OnInit {
   getDataDevice(id: any) {
     // loading on
     this.loadingdataDevice = true;
+    // set nilai select Device
+    this.stateStatusSelect = id;
+    // set variable
     const data = {
       id_alat: id,
       id_user: localStorage.getItem('cIdUser')
@@ -89,6 +108,8 @@ export class SettingComponent implements OnInit {
           is_on: [this.selectStatusTimeOn],
           is_off: [this.selectStatusTimeOff]
         });
+        // get data share untuk table share
+        this.getDataShareDevice();
         // loading mati
         this.loadingdataDevice = false;
       },
@@ -209,14 +230,14 @@ export class SettingComponent implements OnInit {
         onOff = response.isOnOff;
       });
       const data = {
-        'id_alat': this.dataDevice['id_alat'],
-        'status_on_off': onOff,
-        'password': this.dataDevice['password'],
-        'waktu_on': this.deviceForm.value.waktu_on,
-        'waktu_off': this.deviceForm.value.waktu_off,
-        'nama_alat': this.deviceForm.value.nama_alat,
-        'is_on': this.deviceForm.value.is_on == true ? 1 : 0,
-        'is_off': this.deviceForm.value.is_off == true ? 1 : 0
+        id_alat: this.dataDevice['id_alat'],
+        status_on_off: onOff,
+        password: this.dataDevice['password'],
+        waktu_on: this.deviceForm.value.waktu_on,
+        waktu_off: this.deviceForm.value.waktu_off,
+        nama_alat: this.deviceForm.value.nama_alat,
+        is_on: this.deviceForm.value.is_on == true ? 1 : 0,
+        is_off: this.deviceForm.value.is_off == true ? 1 : 0
       }
       // proses update
       this.api.updateStatusAlat('id_alat', data).subscribe(response => {
@@ -245,4 +266,92 @@ export class SettingComponent implements OnInit {
     }
   }
 
+  // Share
+
+  // rubah status share
+  setIsShareDevice(state: boolean) {
+    this.isShareDevice = state;
+    // reset inputan username pada share
+    this.shareDeviceForm.reset();
+  }
+
+  // get data share device
+  getDataShareDevice() {
+    this.loadingDataDeviceShared = true;
+    // proses get data
+    this.api.getDataOwnedShared(this.dataDevice['id_alat'], '2', 'id_alat').subscribe(response => {
+      this.dataShareDevice = response.data;
+      // loading mati
+      this.loadingDataDeviceShared = false;
+    }, error => { // jika terjadi error
+      console.log(error);
+      // loading mati
+      this.loadingDataDeviceShared = false;
+      // notif error
+      this.notif.error(error.message);
+    });
+  }
+
+  // share device
+  shareThisDevice() {
+    // spinner aktif
+    this.spinner.show(); 
+    // cek apakah form usename tidak kosong
+    if (this.shareDeviceForm.value.username != '' && this.shareDeviceForm.value.username != null) {
+      // cek username
+      this.api.getDataUser(this.shareDeviceForm.value.username).subscribe(response => {
+        // jika username ada atau terdaftar
+        if (response.status == 1) {
+          // buat variable
+          const data = {
+            id_alat: this.dataDevice['id_alat'],
+            id_user: response.data[0].id_user,
+            level: 2, // status shared
+            is_confirm: 1 // meminta confirm dari user yang menerima
+          }
+          // proses share
+          this.api.addOrShareDevice(data).subscribe(response => {
+            if (response.status == 1) { // jika share berhasil
+              // reset input username pada device form
+              this.shareDeviceForm = this.fb.group({
+                nama_alat: [this.dataDevice['nama_alat']],
+                username: ['', Validators.required]     
+              });
+              // get data share untuk table share
+              this.getDataShareDevice();
+              // notif
+              this.notif.success(response.message);
+              // spinner mati
+              this.spinner.hide(); 
+            } else { // jika share sudah pernah dilakukan pada user ini
+              // notif
+              this.notif.info(response.message);
+              // spinner mati
+              this.spinner.hide(); 
+            }
+          }, error => {
+            // notif
+            this.notif.error(error.message);
+            // spinner mati
+            this.spinner.hide(); 
+          });
+        } else { // jika username tidak ada atau belum terdaftar
+          // notif
+          this.notif.info(response.message);
+          // spinner mati
+          this.spinner.hide(); 
+        }
+      }, error => {
+        // notif
+        this.notif.error(error.message);
+        // spinner mati
+        this.spinner.hide(); 
+      });
+    } else { // jika username kosong
+      // notif
+      this.notif.error('Username cannot be empty!');
+      // spinner mati
+      this.spinner.hide(); 
+    }
+  }
 }

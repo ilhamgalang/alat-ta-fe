@@ -27,11 +27,10 @@
     </div>
   </div>
 
-  <div class=" ld-over" style="min-height: 200px;" [ngClass]="{'running':loadingdataDevice}" *ngIf="selectIdDevice.value != 0">
-    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
-    <div class="row wow slideInUp">
+  <div class="ld-over" style="min-height: 200px;" [ngClass]="{'running':loadingdataDevice}" *ngIf="stateStatusSelect != 0 && !isShareDevice">
+    <div class="row wow zoomIn">
       <div class="col-12 col-sm-10 col-md-8 col-lg-6 d-block mx-auto mb-2">
-        <form [formGroup]="deviceForm" class="mt-3 border border-light p-3" (submit)="tes()">
+        <form [formGroup]="deviceForm" class="mt-3 border border-light p-3" (submit)="saveFormDevice()">
           <p class="h5 text-center mt-3 mb-2"><i class="fa fa-gears prefix"></i> Form Setting {{dataDevice.nama_alat}}</p>
           <div class="row">
             <div class="col-11">
@@ -58,8 +57,8 @@
                 [color]="'primary'"
                 [checked]="selectStatusTimeOn"
                 class="pt-5" formControlName="is_on">
-                <div *ngIf="selectStatusTimeOn">ON</div>
-                <div *ngIf="!selectStatusTimeOn">OFF</div>
+                <div *ngIf="deviceForm.value.is_on">ON</div>
+                <div *ngIf="!deviceForm.value.is_on">OFF</div>
               </mat-slide-toggle>
             </div>
           </div>
@@ -80,15 +79,15 @@
                 [color]="'primary'"
                 [checked]="selectStatusTimeOff"
                 class="pt-5" formControlName="is_off">
-                <div *ngIf="selectStatusTimeOff">ON</div>
-                <div *ngIf="!selectStatusTimeOff">OFF</div>
+                <div *ngIf="deviceForm.value.is_off">ON</div>
+                <div *ngIf="!deviceForm.value.is_off">OFF</div>
             </mat-slide-toggle>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <div class="float-right mb-3 mr-4 mt-1">
-                <button mdbBtn color="info" type="button" (click)="saveFormDevice()" mdbWavesEffect><i class="fa fa-save prefix mr-1"></i> Save</button>
+                <button mdbBtn color="info" type="submit" mdbWavesEffect><i class="fa fa-save prefix mr-1"></i> Save</button>
                 <button mdbBtn color="warning" type="button" (click)="resetFromDefault()" mdbWavesEffect><i class="fa fa-close prefix mr-1"></i> Cancel</button>                
               </div>
 
@@ -107,14 +106,111 @@
           [focusCancel]="true"
           (confirm)="deleteDeviceFromUser(dataDevice.id_user_alat, dataDevice.id_alat)">
         </swal>
-        <button mdbBtn color="success" type="button" mdbWavesEffect><i class="fa fa-share-alt prefix mr-1"></i> Share This Device</button>
+        <button mdbBtn color="success" type="button" (click)="setIsShareDevice(true)" mdbWavesEffect><i class="fa fa-share-alt prefix mr-1"></i> Share This Device</button>
         <button mdbBtn color="danger" type="button" mdbWavesEffect [swal]="deleteSwal"><i class="fa fa-trash prefix mr-1"></i> Remove This Device</button>
       </div>
 
     </div>
 
   </div>
-  
+
+  <div class="row wow zoomIn" *ngIf="stateStatusSelect != 0 && isShareDevice">
+    <div class="col">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 mb-3">
+          <form [formGroup]="shareDeviceForm" class="mt-3 border border-light p-3" (submit)="shareThisDevice()">
+            <p class="h5 text-center mt-3 mb-2"><i class="fa fa-share-alt prefix"></i> Share Device</p>
+            <div class="row">
+              <div class="col-11">
+                <div class="md-form form-sm">
+                  <i class="fa fa-pencil-square-o prefix"></i>
+                  <input mdbInputDirective type="text" id="shareDeviceName" class="form-control form-control-sm" data-error="required" data-success="-" [value]="dataDevice.nama_alat" formControlName="nama_alat" readonly>
+                  <label for="shareDeviceName" class="">Device Name</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-11">
+                <div class="md-form form-sm">
+                  <i class="fa fa-pencil-square-o prefix"></i>
+                  <input mdbInputDirective type="text" id="shareUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
+                  <label for="shareUsername" class="">Username</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <button mdbBtn color="success" class="d-block mx-auto" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-share prefix mr-1"></i> Share</button>            
+              </div>
+            </div>
+          </form>         
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 ld-over mt-2" [ngClass]="{'running':loadingDataDeviceShared}">          
+          <div class="ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+          <div>
+            <h3>
+            Data Share
+            </h3>
+            <ngx-datatable
+            class="material mb-4" 
+            [rows]="dataShareDevice"
+            [columnMode]="'force'"
+            [headerHeight]="50"
+            [footerHeight]="'auto'"
+            [rowHeight]="'auto'"
+            [limit]="5">
+            <ngx-datatable-column name="Device">
+              <ng-template let-column="column" ngx-datatable-header-template>
+              {{ column.name }}
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.nama_alat }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Username">
+              <ng-template let-column="column" ngx-datatable-header-template>
+              {{ column.name }}
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.username }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Status" headerClass="text-center" cellClass="text-center">
+              <ng-template let-column="column" ngx-datatable-header-template>
+              {{ column.name }}
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <div class="font-weight-bold red-text" *ngIf="row.is_confirm == 1">Delay</div>	
+                <div class="font-weight-bold green-text" *ngIf="row.is_confirm == 0">Accepted</div>						
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Action" headerClass="text-center" cellClass="text-center">
+              <ng-template let-column="column" ngx-datatable-header-template>
+              {{ column.name }}
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>                
+                <swal
+                  #deleteFromShare
+                  title="Are you sure?"
+                  text="You won't be able to revert this!"
+                  type="question"
+                  [showCancelButton]="true"
+                  [focusCancel]="true"
+                  (confirm)="tes()">
+                </swal>
+                <div class="font-weight-bold red-text"><i class="fa fa-trash prefix p-2" [swal]="deleteFromShare" style="cursor: pointer;"></i></div>	
+              </ng-template>
+            </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button mdbBtn color="warning" class="my-4 float-right" (click)="setIsShareDevice(false)" type="button" mdbWavesEffect>Back</button> 
+        </div>
+      </div>
+    </div>
+  </div>  
 
 </div>
-

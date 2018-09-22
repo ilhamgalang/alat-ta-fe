@@ -41,11 +41,11 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="isSignIn == 0">
+  <div class="row wow zoomIn" *ngIf="isSignIn == 0">
     <div class="col-12 col-sm-9 col-md-7 col-lg-5 mx-auto d-block">
 
       <!-- Register -->
-      <form [formGroup]="registerForm" (submit)="register()" class="border border-light p-5 wow zoomIn">
+      <form [formGroup]="registerForm" (submit)="register()" class="border border-light p-5">
         <p class="h4 text-center mb-4"><i class="fa fa-user-circle-o prefix"></i> Sign up</p>
 
         <!-- Username -->
@@ -69,10 +69,10 @@
 
         <!-- Sign up button -->
         <button mdbBtn color="info" class="my-4 mx-auto d-block" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-user-plus prefix mr-1"></i> Sign up</button>
-        <!-- Back button -->
-        <button mdbBtn color="warning" class="my-4 mx-auto d-block" type="button" (click)="setIsSignIn(1); registerForm.reset()"><i class="fa fa-arrow-left prefix mr-1"></i> Back</button>
 
       </form>
+      <!-- Back button -->
+      <button mdbBtn color="warning" class="my-4 float-right" type="button" (click)="setIsSignIn(1); registerForm.reset()">Back</button>
 
     </div>
   </div>

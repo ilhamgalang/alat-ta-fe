@@ -36,10 +36,10 @@
 
 <div class="container-fluid" *ngIf="isAddDevice">
 
-  <div class="row">
+  <div class="row wow zoomIn">
     <div class="col-12 col-sm-9 col-md-7 col-lg-5 mx-auto d-block">
       <!-- form Add New Device -->
-      <form class="border border-light p-5 wow zoomIn" [formGroup]="addNewDeviceForm" (submit)="addNewDevice()">
+      <form class="border border-light p-5" [formGroup]="addNewDeviceForm" (submit)="addNewDevice()">
 
         <p class="text-center h4 mb-4"><i class="fa fa-desktop prefix mr-1"></i> Add New Device</p>
 
@@ -56,10 +56,10 @@
 
         <!-- Add button -->
         <button mdbBtn color="success" class="my-4 mx-auto d-block" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-plus prefix mr-1"></i>Add</button>
-        <!-- Sign up button -->
-        <button mdbBtn color="warning" class="my-4 mx-auto d-block" (click)="setIsAddDevice(false); getDataDeviceOwned()" type="button" mdbWavesEffect><i class="fa fa-arrow-left prefix mr-1"></i> Back</button>
 
-      </form>      
+      </form>  
+      <!-- Sign up button -->
+      <button mdbBtn color="warning" class="my-4 float-right" (click)="setIsAddDevice(false); getDataDeviceOwned()" type="button" mdbWavesEffect>Back</button>    
     </div>    
   </div>
 
