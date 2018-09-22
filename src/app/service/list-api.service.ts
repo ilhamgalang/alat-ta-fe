@@ -14,7 +14,7 @@ const httpOptions = {
 export class ListApiService {
   constructor(private http: HttpClient) {}
 
-  private api = 'http://192.168.1.7:69/tugas_akhir/alat-v0.10/';
+  private api = 'http://10.10.10.25:69/tugas_akhir/alat-v0.10/';
 
   // Tabel User
   // cek data for login (user)
@@ -88,7 +88,7 @@ export class ListApiService {
   }
 
   // update on off
-  updateOnOff(primary: string, data: Object): Observable<any> {
+  updateStatusAlat(primary: string, data: Object): Observable<any> {
     let result: Observable<Object>;
     result = this.http.post(this.api + 'StatusAlat/update/' + primary, data);
     return result;

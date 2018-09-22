@@ -8,55 +8,73 @@
 <!--/.Navbar-->
 
 
-<div class="container">
+<div class="container-fluid">
   <!-- Content here -->
 
-  <!-- Sign In -->
-  <form [formGroup]="loginForm" (submit)="cekLogin()" class="text-center border border-light p-5 wow zoomIn" *ngIf="isSignIn == 1">
-    <p class="h4 mb-4">Sign in</p>
-  
-    <!-- Username -->  
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="text" id="defaultLoginFormUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
-      <label for="defaultLoginFormUsername" class="">Username</label>
-    </div>
-    <!-- Password -->
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="password" id="defaultLoginFormPassword" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
-      <label for="defaultLoginFormPassword" class="">Password</label>
-    </div>
-    <!-- Sign in button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Sign in</button>
-    <!-- Register -->
-    <p>Not a member?
-      <span class="blue-text" (click)="setIsSignIn(0)">Register</span>
-    </p>  
-  </form>
+  <div class="row" *ngIf="isSignIn == 1">
+    <div class="col-12 col-sm-9 col-md-7 col-lg-5 mx-auto d-block">
 
-  <!-- Register -->
-  <form [formGroup]="registerForm" (submit)="register()" class="text-center border border-light p-5 wow zoomIn" *ngIf="isSignIn == 0">
-    <p class="h4 mb-4">Sign up</p>
+      <!-- Sign In -->
+      <form [formGroup]="loginForm" (submit)="cekLogin()" class="border border-light p-5 wow zoomIn">
+        <p class="h4 text-center mb-4" style="cursor: default;"><i class="fa fa-user-circle prefix"></i> Sign in</p>
+      
+        <!-- Username -->  
+        <div class="md-form form-sm">
+          <i class="fa fa-user prefix"></i>
+          <input mdbInputDirective type="text" id="defaultLoginFormUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
+          <label for="defaultLoginFormUsername" class="">Username</label>
+        </div>
+        <!-- Password -->
+        <div class="md-form form-sm">
+          <i class="fa fa-lock prefix"></i>
+          <input mdbInputDirective type="password" id="defaultLoginFormPassword" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
+          <label for="defaultLoginFormPassword" class="">Password</label>
+        </div>
+        <!-- Sign in button -->
+        <button mdbBtn color="info" class="my-4 mx-auto d-block" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-sign-in prefix mr-1"></i> Sign in</button>
+        <!-- Register -->
+        <p class="text-center">Not a member?
+          <span class="blue-text" style="cursor: pointer;" (click)="setIsSignIn(0)">Register</span>
+        </p>  
+      </form>
 
-    <!-- Username -->
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="text" id="defaultRegisterFormUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
-      <label for="defaultRegisterFormUsername" class="">Username</label>
     </div>
-    <!-- Name -->
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="text" id="defaultRegisterFormFirstName" class="form-control form-control-sm" data-error="-" data-success="-" formControlName="nama_user">
-      <label for="defaultRegisterFormFirstName" class="">Name</label>
-    </div>
-    <!-- Password -->
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="password" id="defaultRegisterFormPassword" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
-      <label for="defaultRegisterFormPassword" class="">Password</label>
-    </div>
+  </div>
 
-    <!-- Sign up button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Sign up</button>
-    <!-- Back button -->
-    <button mdbBtn color="warning" block="true" class="my-4" type="button" (click)="setIsSignIn(1); registerForm.reset()">Back</button>
+  <div class="row" *ngIf="isSignIn == 0">
+    <div class="col-12 col-sm-9 col-md-7 col-lg-5 mx-auto d-block">
 
-  </form>
+      <!-- Register -->
+      <form [formGroup]="registerForm" (submit)="register()" class="border border-light p-5 wow zoomIn">
+        <p class="h4 text-center mb-4"><i class="fa fa-user-circle-o prefix"></i> Sign up</p>
+
+        <!-- Username -->
+        <div class="md-form form-sm">
+          <i class="fa fa-user prefix"></i>
+          <input mdbInputDirective type="text" id="defaultRegisterFormUsername" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="username">
+          <label for="defaultRegisterFormUsername" class="">Username</label>
+        </div>
+        <!-- Name -->
+        <div class="md-form form-sm">
+          <i class="fa fa-pencil-square-o prefix"></i>
+          <input mdbInputDirective type="text" id="defaultRegisterFormFirstName" class="form-control form-control-sm" data-error="-" data-success="-" formControlName="nama_user">
+          <label for="defaultRegisterFormFirstName" class="">Name</label>
+        </div>
+        <!-- Password -->
+        <div class="md-form form-sm">
+          <i class="fa fa-lock prefix"></i>
+          <input mdbInputDirective type="password" id="defaultRegisterFormPassword" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
+          <label for="defaultRegisterFormPassword" class="">Password</label>
+        </div>
+
+        <!-- Sign up button -->
+        <button mdbBtn color="info" class="my-4 mx-auto d-block" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-user-plus prefix mr-1"></i> Sign up</button>
+        <!-- Back button -->
+        <button mdbBtn color="warning" class="my-4 mx-auto d-block" type="button" (click)="setIsSignIn(1); registerForm.reset()"><i class="fa fa-arrow-left prefix mr-1"></i> Back</button>
+
+      </form>
+
+    </div>
+  </div>
+
 </div>

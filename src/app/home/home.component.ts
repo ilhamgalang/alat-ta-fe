@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit {
           nama_alat: response.data[0].nama_alat
         }
         // proses update
-        this.api.updateOnOff('id_alat', data).subscribe(responseUpdate => {
+        this.api.updateStatusAlat('id_alat', data).subscribe(responseUpdate => {
           // jika proses berhasil
           if (responseUpdate.status == 1) {
             // refresh get data

@@ -19,6 +19,7 @@ import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // service
 import { ListApiService } from './service/list-api.service';
@@ -64,7 +65,8 @@ import { FooterComponent } from './footer/footer.component';
     MatButtonModule, MatCheckboxModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   providers: [ListApiService, NotifService],
   bootstrap: [AppComponent],

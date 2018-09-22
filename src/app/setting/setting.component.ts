@@ -19,6 +19,11 @@ export class SettingComponent implements OnInit {
   dataDevice: Object = {};
   loadingdataDevice = false; // tampilkan loading sampai data diterima
 
+  selectStatusTimeOn: boolean; 
+  selectStatusTimeOff: boolean;
+
+  deviceForm: FormGroup;
+
   constructor(
     private router: Router,
     private api: ListApiService,
@@ -32,6 +37,14 @@ export class SettingComponent implements OnInit {
     localStorage.setItem('cCurrentPath', 'setting');
     // get data device
     this.getDataDeviceForSelect('1');
+    // device form
+    this.deviceForm = this.fb.group({
+      nama_alat: ['', Validators.required],
+      waktu_on: ['', Validators.required],
+      waktu_off: ['', Validators.required],
+      is_on: [''],
+      is_off: ['']
+    });
   }
 
   // get data device untuk select
@@ -65,6 +78,17 @@ export class SettingComponent implements OnInit {
     this.api.getDataDeviceSetting(data).subscribe(
       response => {
         this.dataDevice = response;
+        // kondisi untuk status time on dan off
+        this.selectStatusTimeOn = response.data[0].is_on == 1 ? true : false;
+        this.selectStatusTimeOff = response.data[0].is_off == 1 ? true : false;
+        // isi from device    // device form
+        this.deviceForm = this.fb.group({
+          nama_alat: [response.data[0].nama_alat, Validators.required],
+          waktu_on: [response.data[0].waktu_on, Validators.required],
+          waktu_off: [response.data[0].waktu_off, Validators.required],
+          is_on: [this.selectStatusTimeOn],
+          is_off: [this.selectStatusTimeOff]
+        });
         // loading mati
         this.loadingdataDevice = false;
       },
@@ -80,8 +104,8 @@ export class SettingComponent implements OnInit {
 
   // delete device from user
   deleteDeviceFromUser(idUserAlat: string, idAlat: string) {
-    // spinner on
-    this.spinner.show();
+    // loading on
+    this.loadingdataDevice = true;
     // proses delete
     this.api.deleteDeviceFromUser(idUserAlat).subscribe(
       response => {
@@ -91,15 +115,15 @@ export class SettingComponent implements OnInit {
         this.updateDeviceToOff(idAlat);
         // notif
         this.notif.success(response.message);
-        // spinner off
-        this.spinner.hide();
+        // loading mati
+        this.loadingdataDevice = false;
       },
       error => {
         console.log(error);
         // notif error
         this.notif.error(error.message);
-        // spinner off
-        this.spinner.hide();
+        // loading mati
+        this.loadingdataDevice = false;
       }
     );
   }
@@ -124,7 +148,7 @@ export class SettingComponent implements OnInit {
           nama_alat: response.data[0].nama_alat
         }
         // proses update
-        this.api.updateOnOff('id_alat', data).subscribe(responseUpdate => {
+        this.api.updateStatusAlat('id_alat', data).subscribe(responseUpdate => {
           // jika proses berhasil
           if (responseUpdate.status == 1) {
             // tambahkan action ke record
@@ -159,4 +183,66 @@ export class SettingComponent implements OnInit {
       this.notif.error(error.message);
     });
   }
+
+  // button cancel
+  resetFromDefault() {
+    // reset form ketika pertama muncul
+    this.deviceForm = this.fb.group({
+      nama_alat: [this.dataDevice.data[0].nama_alat, Validators.required],
+      waktu_on: [this.dataDevice.data[0].waktu_on, Validators.required],
+      waktu_off: [this.dataDevice.data[0].waktu_off, Validators.required],
+      is_on: [this.selectStatusTimeOn],
+      is_off: [this.selectStatusTimeOff]
+    });
+  }
+
+  // button save
+  saveFormDevice() {
+    // loading on
+    this.loadingdataDevice = true;
+    // create variable on off
+    let onOff: string;
+    // cek apakah nama device tidak kosong 
+    if (this.deviceForm.value.nama_alat != '' || this.deviceForm.value.nama_alat != null) {
+      // get data terbaru
+      this.api.getDataDeviceById(this.dataDevice.data[0].id_alat).subscribe(response => {
+        onOff = response.data[0].isOnOff;
+      });
+      const data = {
+        'id_alat': this.dataDevice.data[0].id_alat,
+        'status_on_off': onOff,
+        'password': this.dataDevice.data[0].password,
+        'waktu_on': this.deviceForm.value.waktu_on,
+        'waktu_off': this.deviceForm.value.waktu_off,
+        'nama_alat': this.deviceForm.value.nama_alat,
+        'is_on': this.deviceForm.value.is_on == true ? 1 : 0,
+        'is_off': this.deviceForm.value.is_off == true ? 1 : 0
+      }
+      // proses update
+      this.api.updateStatusAlat('id_alat', data).subscribe(response => {
+        if (response.status == 1) {
+          // refresh select
+          this.getDataDeviceForSelect('1');          
+          // notif
+          this.notif.success(response.message);
+          // loading off
+          this.loadingdataDevice = false;
+        } else {
+          // notif
+          this.notif.error(response.message);
+          // loading off
+          this.loadingdataDevice = false;          
+        }
+      }, error => {
+        // notif
+        this.notif.error(error.message);
+        // loading off
+        this.loadingdataDevice = false;
+      });
+    } else {
+      // notif
+      this.notif.error('Device Name Can\'t Empty!');
+    }
+  }
+
 }

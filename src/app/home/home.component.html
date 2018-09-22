@@ -1,10 +1,10 @@
 <app-navigation></app-navigation>
 
-<div class="container" *ngIf="!isAddDevice">
+<div class="container-fluid" *ngIf="!isAddDevice">
   <!-- Content here -->
   
   <blockquote class="blockquote bq-info">
-    <p class="bq-title">My Device   
+    <p class="bq-title"><i class="fa fa-desktop prefix mr-1"></i> My Device   
     </p>
   </blockquote>
   <button type="button" class="btn btn-success waves-light" (click)="setIsAddDevice(true)" mdbWavesEffect><i class="fa fa-plus mr-1"></i> Add New Device</button>
@@ -13,7 +13,7 @@
 
   <div class="row ld-over pb-3" style="min-height: 200px;" [ngClass]="{'running':loadingDataDeviceOwned}">
     <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
-    <div class="col-6" [ngClass]="{'d-none':loadingDataDeviceOwned}" *ngFor="let data of dataDeviceOwned; let i = index">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3" [ngClass]="{'d-none':loadingDataDeviceOwned}" *ngFor="let data of dataDeviceOwned; let i = index">
       <!-- Card -->
       <mdb-card>
         <div class="view rgba-white-slight waves-light" mdbWavesEffect>
@@ -34,27 +34,33 @@
 
 </div>
 
-<div class="container" *ngIf="isAddDevice">
+<div class="container-fluid" *ngIf="isAddDevice">
 
-<!-- form Add New Device -->
-  <form class="text-center border border-light p-5 wow zoomIn" [formGroup]="addNewDeviceForm" (submit)="addNewDevice()">
+  <div class="row">
+    <div class="col-12 col-sm-9 col-md-7 col-lg-5 mx-auto d-block">
+      <!-- form Add New Device -->
+      <form class="border border-light p-5 wow zoomIn" [formGroup]="addNewDeviceForm" (submit)="addNewDevice()">
 
-    <p class="h4 mb-4">Add New Device</p>
+        <p class="text-center h4 mb-4"><i class="fa fa-desktop prefix mr-1"></i> Add New Device</p>
 
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="text" id="addIdDevice" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="id_alat">
-      <label for="addIdDevice" class="">Id Device</label>
-    </div>
-    <div class="md-form form-sm">
-      <input mdbInputDirective type="password" id="addPasswordDevice" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
-      <label for="addPasswordDevice" class="">Password</label>
-    </div>
+        <div class="md-form form-sm">
+          <i class="fa fa-key prefix mr-1"></i> 
+          <input mdbInputDirective type="text" id="addIdDevice" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="id_alat">
+          <label for="addIdDevice" class="">Id Device</label>
+        </div>
+        <div class="md-form form-sm">
+          <i class="fa fa-lock prefix mr-1"></i> 
+          <input mdbInputDirective type="password" id="addPasswordDevice" class="form-control form-control-sm" data-error="required" data-success="-" formControlName="password">
+          <label for="addPasswordDevice" class="">Password</label>
+        </div>
 
-    <!-- Add button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="submit"><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner> Add</button>
-    <!-- Cancel button -->
-    <button mdbBtn color="warning" block="true" class="my-4" (click)="setIsAddDevice(false); getDataDeviceOwned()" type="button">Cancel</button>
+        <!-- Add button -->
+        <button mdbBtn color="success" class="my-4 mx-auto d-block" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-plus prefix mr-1"></i>Add</button>
+        <!-- Sign up button -->
+        <button mdbBtn color="warning" class="my-4 mx-auto d-block" (click)="setIsAddDevice(false); getDataDeviceOwned()" type="button" mdbWavesEffect><i class="fa fa-arrow-left prefix mr-1"></i> Back</button>
 
-  </form>
+      </form>      
+    </div>    
+  </div>
 
 </div>

@@ -1,5 +1,5 @@
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-2 navbar-dark blue mb-3" [containerInside]="false">
+<mdb-navbar id="nav" SideClass="navbar navbar-2 navbar-dark blue fixed-top" [containerInside]="false">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand>
@@ -12,16 +12,16 @@
     <!-- Links -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" [ngClass]="{'active':currentPath == 'home'}">
-        <a class="nav-link waves-light" routerLink="/home" mdbWavesEffect>Home</a>
+        <a class="nav-link waves-light" routerLink="/home" mdbWavesEffect><i class="fa fa-home prefix mr-1"></i> Home</a>
       </li>
       <li class="nav-item" [ngClass]="{'active':currentPath == 'setting'}">
-        <a class="nav-link waves-light" routerLink="/setting" mdbWavesEffect>Setting</a>
+        <a class="nav-link waves-light" routerLink="/setting" mdbWavesEffect><i class="fa fa-gear prefix mr-1"></i> Setting</a>
       </li>
       <li class="nav-item" [ngClass]="{'active':currentPath == 'record'}">
-        <a class="nav-link waves-light" routerLink="/record" mdbWavesEffect>Record</a>
+        <a class="nav-link waves-light" routerLink="/record" mdbWavesEffect><i class="fa fa-tasks prefix mr-1"></i> Record</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link waves-light" (click)="logout()" mdbWavesEffect>Log out</a>
+        <a class="nav-link waves-light" (click)="logout()" mdbWavesEffect><i class="fa fa-power-off prefix mr-1"></i> Log out</a>
       </li>
     </ul>
     <!-- Links -->

@@ -1,43 +1,120 @@
 <app-navigation></app-navigation>
 
-<ngx-spinner type="line-scale-pulse-out"></ngx-spinner>
-<div class="container">
+<div class="container-fluid">
 
   <blockquote class="blockquote bq-info">
-    <p class="bq-title">Setting</p>
+    <p class="bq-title"><i class="fa fa-gear prefix mr-1"></i> Setting</p>
   </blockquote>  
 
   <div class="row ld-over" [ngClass]="{'running':loadingDataDeviceSelect}">
     <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
     <div class="col" [ngClass]="{'d-none':loadingDataDeviceSelect}">
       <label>Select : </label>
-      <select #selectOwnerDevice class="browser-default custom-select mb-3" (change)="getDataDeviceForSelect(selectOwnerDevice.value)">
-        <option value="1" selected>My Device</option>
-        <option value="2">Device Shared With Me</option>
-      </select>
-    
-      <select #selectIdDevice class="browser-default custom-select mb-4" (change)="getDataDevice(selectIdDevice.value)">
-        <option value="0">---</option>
-        <option *ngFor="let data of dataDeviceForSelect.data; let i = index" value="{{data.id_alat}}">{{data.nama_alat}}</option>
-      </select>    
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+          <select #selectOwnerDevice class="browser-default custom-select mb-3" (change)="getDataDeviceForSelect(selectOwnerDevice.value)">
+            <option value="1" selected>My Device</option>
+            <option value="2">Device Shared With Me</option>
+          </select>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+          <select #selectIdDevice class="browser-default custom-select mb-4" (change)="getDataDevice(selectIdDevice.value)">
+            <option value="0" selected>---</option>
+            <option *ngFor="let data of dataDeviceForSelect.data; let i = index" value="{{data.id_alat}}">{{data.nama_alat}}</option>
+          </select>    
+        </div>
+      </div>    
     </div>
   </div>
 
-  <div class="row ld-over" style="min-height: 200px;" [ngClass]="{'running':loadingdataDevice}" *ngIf="selectIdDevice.value != 0">
+  <div class=" ld-over" style="min-height: 200px;" [ngClass]="{'running':loadingdataDevice}" *ngIf="selectIdDevice.value != 0">
     <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
-    <div class="col">
-      <swal
-        #deleteSwal
-        title="Are you sure?"
-        text="You won't be able to revert this!"
-        type="question"
-        [showCancelButton]="true"
-        [focusCancel]="true"
-        (confirm)="deleteDeviceFromUser(dataDevice.data[0].id_user_alat, dataDevice.data[0].id_alat)">
-      </swal>
-      <button mdbBtn color="danger" block="true" type="button" mdbWavesEffect [swal]="deleteSwal">Delete This Device</button>
+    <div class="row wow slideInUp">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 d-block mx-auto mb-2">
+        <form [formGroup]="deviceForm" class="mt-3 border border-light p-3" (submit)="tes()">
+          <p class="h5 text-center mt-3 mb-2"><i class="fa fa-gears prefix"></i> Form Setting {{dataDevice.data[0].nama_alat}}</p>
+          <div class="row">
+            <div class="col-11">
+              <div class="md-form form-sm">
+                <i class="fa fa-pencil-square-o prefix"></i>
+                <input mdbInputDirective type="text" id="deviceName" class="form-control form-control-sm" data-error="required" data-success="-" [value]="dataDevice.data[0].nama_alat" formControlName="nama_alat">
+                <label for="deviceName" class="">Device Name</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-9">
+              <div class="24hr-example pt-2">
+                <div class="md-form">
+                  <i class="fa fa-clock-o prefix"></i>
+                  <input mdbInputDirective type="text" id="timeon" class="form-control" placeholder="24hr format" data-error="required" data-success="-" aria-label="24hr format" [ngxTimepicker]="fullTimeOn" [format]="24" [value]="dataDevice.data[0].waktu_on" formControlName="waktu_on" readonly>
+                  <label for="timeon">Time On</label>
+                </div>
+                <ngx-material-timepicker #fullTimeOn></ngx-material-timepicker>
+              </div>
+            </div>
+            <div class="col-3">
+              <mat-slide-toggle 
+                [color]="'primary'"
+                [checked]="selectStatusTimeOn"
+                class="pt-5" formControlName="is_on">
+                <div *ngIf="selectStatusTimeOn">ON</div>
+                <div *ngIf="!selectStatusTimeOn">OFF</div>
+              </mat-slide-toggle>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-9">
+              <div class="24hr-example pt-2">
+                <div class="md-form">
+                  <i class="fa fa-clock-o prefix"></i>
+                  <input mdbInputDirective type="text" id="timeoff" class="form-control" placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="fullTimeOff" data-error="required" data-success="-" [format]="24" [value]="dataDevice.data[0].waktu_off" formControlName="waktu_off" readonly>
+                  <label for="timeoff">Time Off</label>
+                </div>
+                <ngx-material-timepicker #fullTimeOff></ngx-material-timepicker>
+              </div>
+            </div>
+            <div class="col-3">
+              <mat-slide-toggle 
+                [color]="'primary'"
+                [checked]="selectStatusTimeOff"
+                class="pt-5" formControlName="is_off">
+                <div *ngIf="selectStatusTimeOff">ON</div>
+                <div *ngIf="!selectStatusTimeOff">OFF</div>
+            </mat-slide-toggle>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="float-right mb-3 mr-4 mt-1">
+                <button mdbBtn color="info" type="button" (click)="saveFormDevice()" mdbWavesEffect><i class="fa fa-save prefix mr-1"></i> Save</button>
+                <button mdbBtn color="warning" type="button" (click)="resetFromDefault()" mdbWavesEffect><i class="fa fa-close prefix mr-1"></i> Cancel</button>                
+              </div>
+
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <div class="col mt-2">
+        <swal
+          #deleteSwal
+          title="Are you sure?"
+          text="You won't be able to revert this!"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="deleteDeviceFromUser(dataDevice.data[0].id_user_alat, dataDevice.data[0].id_alat)">
+        </swal>
+        <button mdbBtn color="success" type="button" mdbWavesEffect><i class="fa fa-share-alt prefix mr-1"></i> Share This Device</button>
+        <button mdbBtn color="danger" type="button" mdbWavesEffect [swal]="deleteSwal"><i class="fa fa-trash prefix mr-1"></i> Remove This Device</button>
+      </div>
+
     </div>
+
   </div>
   
 
 </div>
+
