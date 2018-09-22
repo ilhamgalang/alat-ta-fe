@@ -77,7 +77,7 @@ export class SettingComponent implements OnInit {
     };
     this.api.getDataDeviceSetting(data).subscribe(
       response => {
-        this.dataDevice = response;
+        this.dataDevice = response.data[0];
         // kondisi untuk status time on dan off
         this.selectStatusTimeOn = response.data[0].is_on == 1 ? true : false;
         this.selectStatusTimeOff = response.data[0].is_off == 1 ? true : false;
@@ -188,9 +188,9 @@ export class SettingComponent implements OnInit {
   resetFromDefault() {
     // reset form ketika pertama muncul
     this.deviceForm = this.fb.group({
-      nama_alat: [this.dataDevice.data[0].nama_alat, Validators.required],
-      waktu_on: [this.dataDevice.data[0].waktu_on, Validators.required],
-      waktu_off: [this.dataDevice.data[0].waktu_off, Validators.required],
+      nama_alat: [this.dataDevice['nama_alat'], Validators.required],
+      waktu_on: [this.dataDevice['waktu_on'], Validators.required],
+      waktu_off: [this.dataDevice['waktu_off'], Validators.required],
       is_on: [this.selectStatusTimeOn],
       is_off: [this.selectStatusTimeOff]
     });
@@ -205,13 +205,13 @@ export class SettingComponent implements OnInit {
     // cek apakah nama device tidak kosong 
     if (this.deviceForm.value.nama_alat != '' || this.deviceForm.value.nama_alat != null) {
       // get data terbaru
-      this.api.getDataDeviceById(this.dataDevice.data[0].id_alat).subscribe(response => {
-        onOff = response.data[0].isOnOff;
+      this.api.getDataDeviceById(this.dataDevice['id_alat']).subscribe(response => {
+        onOff = response.isOnOff;
       });
       const data = {
-        'id_alat': this.dataDevice.data[0].id_alat,
+        'id_alat': this.dataDevice['id_alat'],
         'status_on_off': onOff,
-        'password': this.dataDevice.data[0].password,
+        'password': this.dataDevice['password'],
         'waktu_on': this.deviceForm.value.waktu_on,
         'waktu_off': this.deviceForm.value.waktu_off,
         'nama_alat': this.deviceForm.value.nama_alat,
