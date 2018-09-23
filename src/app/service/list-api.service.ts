@@ -41,21 +41,9 @@ export class ListApiService {
 
   // Tabel UserAlat
   // get Data Device by user
-  getDataOwnedShared(
-    id: string,
-    level: string,
-    primary: string
-  ): Observable<any> {
+  getDataOwnedShared(data: Object): Observable<any> {
     let result: Observable<Object>;
-    result = this.http.get(
-      this.api +
-        'UserAlat/getDataOwnedShared?' +
-        primary +
-        '=' +
-        id +
-        '&level=' +
-        level
-    );
+    result = this.http.post(this.api + 'UserAlat/getDataOwnedShared', data);
     return result;
   }
 
@@ -77,6 +65,27 @@ export class ListApiService {
   getDataDeviceSetting(data: Object): Observable<any> {
     let result: Observable<Object>;
     result = this.http.post(this.api + 'UserAlat/getDataDeviceSetting', data);
+    return result;
+  }
+
+  // hapus status share pada suatu device
+  deleteStatusShare(idAlat: string, idUser: string): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.get(this.api + 'UserAlat/deleteDataShared?id_alat=' + idAlat + '&&id_user=' + idUser);
+    return result;
+  }
+
+  // hapus semua status share pada suatu device
+  deleteStatusShareAll(id: string): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.get(this.api + 'UserAlat/deleteDataSharedAll?id_alat=' + id);
+    return result;
+  }
+
+  // terima device yang di bagikan dengan kita
+  acceptDeviceShare(data: Object): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.api + 'UserAlat/confirmShareDevice', data);
     return result;
   }
 
@@ -121,6 +130,13 @@ export class ListApiService {
   getDataStatistik(data: Object): Observable<any> {
     let result: Observable<Object>;
     result = this.http.post(this.api + 'record/getDataStatistik', data);
+    return result;
+  }
+
+  // ubah / sembunyikan record yang lama ketika device di hapus
+  updateRecordWhenDeviceDeleted(id: string): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.get(this.api + 'record/updateRecord?id_alat=' + id);
     return result;
   }
 }

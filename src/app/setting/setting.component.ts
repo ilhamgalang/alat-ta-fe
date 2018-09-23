@@ -65,22 +65,22 @@ export class SettingComponent implements OnInit {
     // sembunyikan form share
     this.isShareDevice = false;
     // proses get informasi device
-    this.api
-      .getDataOwnedShared(localStorage.getItem('cIdUser'), select, 'id_user')
-      .subscribe(
-        response => {
-          this.dataDeviceForSelect = response;
-          // loading mati
-          this.loadingDataDeviceSelect = false;
-        },
-        error => {
-          console.log(error);
-          // notif error
-          this.notif.error(error.message);
-          // loading mati
-          this.loadingDataDeviceSelect = false;
-        }
-      );
+    const data = {
+      id_user: localStorage.getItem('cIdUser'),
+      level: select,
+      is_confirm: '0'
+    }
+    this.api.getDataOwnedShared(data).subscribe(response => {
+      this.dataDeviceForSelect = response;
+      // loading mati
+      this.loadingDataDeviceSelect = false;
+    }, error => {
+      console.log(error);
+      // notif error
+      this.notif.error(error.message);
+      // loading mati
+      this.loadingDataDeviceSelect = false;
+    });
   }
 
   // get data device by id
@@ -123,30 +123,89 @@ export class SettingComponent implements OnInit {
     );
   }
 
+  // delete device pada user yang di share
+  deleteDeviceFromAllUserShared(idAlat: string) {
+    // proses delete    
+    this.api.deleteStatusShareAll(idAlat).subscribe(response => {
+      if (response.status == 1) {
+        // notif
+        // this.notif.success(response.message);        
+      } else {
+        // notif
+        // this.notif.error(response.message);                
+      }
+    }, error => {
+      // notif
+      this.notif.error(error.message);
+    });
+  }
+
+  // delete device pada user yang di share
+  deleteDeviceUserShared(idAlat: string, idUser: string) {
+    // proses delete    
+    this.api.deleteStatusShare(idAlat, idUser).subscribe(response => {
+      if (response.status == 1) {
+        // get data share untuk table share
+        this.getDataShareDevice();
+        // notif
+        this.notif.success(response.message);        
+      } else {
+        // notif
+        this.notif.error(response.message);                
+      }
+    }, error => {
+      // notif
+      this.notif.error(error.message);
+    });
+  }
+
+  // ubah / sembunyikan record yang lama ketika device di hapus
+  updateRecordWhenDeviceDeleted(idAlat: string) {
+    // proses update
+    this.api.updateRecordWhenDeviceDeleted(idAlat).subscribe(response => {});
+  }
+
+  // delete device share with me
+  deleteDeviceShareWithMe(idUserAlat: string) {
+    // proses
+    this.api.deleteDeviceFromUser(idUserAlat).subscribe(response => {     
+      // refresh select
+      this.getDataDeviceForSelect('2');
+      // notif
+      this.notif.success(response.message);
+    }, error => {
+      // notif error
+      this.notif.error(error.message);
+      // loading mati
+      this.loadingdataDevice = false;
+    });
+  }
+
   // delete device from user
   deleteDeviceFromUser(idUserAlat: string, idAlat: string) {
     // loading on
     this.loadingdataDevice = true;
     // proses delete
-    this.api.deleteDeviceFromUser(idUserAlat).subscribe(
-      response => {
-        // refresh select
-        this.getDataDeviceForSelect('1');
-        // update device menjadi mati
-        this.updateDeviceToOff(idAlat);
-        // notif
-        this.notif.success(response.message);
-        // loading mati
-        this.loadingdataDevice = false;
-      },
-      error => {
-        console.log(error);
-        // notif error
-        this.notif.error(error.message);
-        // loading mati
-        this.loadingdataDevice = false;
-      }
-    );
+    this.api.deleteDeviceFromUser(idUserAlat).subscribe(response => {
+      // proses delete device dari user yang di share
+      this.deleteDeviceFromAllUserShared(idAlat);
+      // hapus record dari user
+      this.updateRecordWhenDeviceDeleted(idAlat);
+      // refresh select
+      this.getDataDeviceForSelect('1');
+      // update device menjadi mati
+      this.updateDeviceToOff(idAlat);
+      // notif
+      this.notif.success(response.message);
+      // loading mati
+      this.loadingdataDevice = false;
+    }, error => {
+      console.log(error);
+      // notif error
+      this.notif.error(error.message);
+      // loading mati
+      this.loadingdataDevice = false;
+    });
   }
 
   // update status lampu yang di hapus menjadi off
@@ -279,7 +338,11 @@ export class SettingComponent implements OnInit {
   getDataShareDevice() {
     this.loadingDataDeviceShared = true;
     // proses get data
-    this.api.getDataOwnedShared(this.dataDevice['id_alat'], '2', 'id_alat').subscribe(response => {
+    const data = {
+      id_alat: this.dataDevice['id_alat'],
+      level: 2,
+    }
+    this.api.getDataOwnedShared(data).subscribe(response => {
       this.dataShareDevice = response.data;
       // loading mati
       this.loadingDataDeviceShared = false;
@@ -302,39 +365,47 @@ export class SettingComponent implements OnInit {
       this.api.getDataUser(this.shareDeviceForm.value.username).subscribe(response => {
         // jika username ada atau terdaftar
         if (response.status == 1) {
-          // buat variable
-          const data = {
-            id_alat: this.dataDevice['id_alat'],
-            id_user: response.data[0].id_user,
-            level: 2, // status shared
-            is_confirm: 1 // meminta confirm dari user yang menerima
-          }
-          // proses share
-          this.api.addOrShareDevice(data).subscribe(response => {
-            if (response.status == 1) { // jika share berhasil
-              // reset input username pada device form
-              this.shareDeviceForm = this.fb.group({
-                nama_alat: [this.dataDevice['nama_alat']],
-                username: ['', Validators.required]     
-              });
-              // get data share untuk table share
-              this.getDataShareDevice();
-              // notif
-              this.notif.success(response.message);
-              // spinner mati
-              this.spinner.hide(); 
-            } else { // jika share sudah pernah dilakukan pada user ini
-              // notif
-              this.notif.info(response.message);
-              // spinner mati
-              this.spinner.hide(); 
+          // cek apakah username yang di input tidak sama dengan username sendiri
+          if (response.data[0].id_user != localStorage.getItem('cIdUser')) {
+            // buat variable
+            const data = {
+              id_alat: this.dataDevice['id_alat'],
+              id_user: response.data[0].id_user,
+              level: 2, // status shared
+              is_confirm: 1 // meminta confirm dari user yang menerima
             }
-          }, error => {
+            // proses share
+            this.api.addOrShareDevice(data).subscribe(response => {
+              if (response.status == 1) { // jika share berhasil
+                // reset input username pada device form
+                this.shareDeviceForm = this.fb.group({
+                  nama_alat: [this.dataDevice['nama_alat']],
+                  username: ['', Validators.required]     
+                });
+                // get data share untuk table share
+                this.getDataShareDevice();
+                // notif
+                this.notif.success(response.message);
+                // spinner mati
+                this.spinner.hide(); 
+              } else { // jika share sudah pernah dilakukan pada user ini
+                // notif
+                this.notif.info(response.message);
+                // spinner mati
+                this.spinner.hide(); 
+              }
+            }, error => {
+              // notif
+              this.notif.error(error.message);
+              // spinner mati
+              this.spinner.hide(); 
+            });            
+          } else {
             // notif
-            this.notif.error(error.message);
+            this.notif.error('Can\'t share this device to yourself!');
             // spinner mati
             this.spinner.hide(); 
-          });
+          }
         } else { // jika username tidak ada atau belum terdaftar
           // notif
           this.notif.info(response.message);

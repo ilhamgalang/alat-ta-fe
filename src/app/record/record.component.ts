@@ -39,7 +39,7 @@ export class RecordComponent implements OnInit {
     // variable untuk post data record
     const data = {
       id_user: localStorage.getItem('cIdUser'),
-      is_new: 1
+      is_new_record: 1
     };
     // proses get data record
     this.api.getDataRecord(data).subscribe(

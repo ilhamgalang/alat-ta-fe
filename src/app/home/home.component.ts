@@ -19,6 +19,12 @@ export class HomeComponent implements OnInit {
   loadingDataDeviceOwned: boolean = true; // tampilkan loading sampai data diterima
   isAddDevice: boolean = false; // kodisi untuk tombol add device
 
+  dataDeviceSharedConfirm: Object;
+  dataDeviceSharedNotConfirm: Object;
+  newShareDevice: number;
+  isShareConfirm: boolean = false; // kodisi untuk tombol add device
+  loadingDataDeviceShared: boolean = true; // tampilkan loading sampai data diterima
+
   dataDevice: Object;
 
   addNewDeviceForm: FormGroup;
@@ -41,9 +47,17 @@ export class HomeComponent implements OnInit {
     });
     // get data device owned
     this.getDataDeviceOwned();
+    // get data device shared
+    this.getDataDeviceSharedConfirm();
+    this.getDataDeviceSharedNotConfirm();
   }
 
   // set nilai untuk menampilkan atau menyembunyikan form add new device
+  setIsShareConfirm(state: boolean) {
+    this.isShareConfirm = state;
+  }
+
+  // set nilai untuk menampilkan atau menyembunyikan table share
   setIsAddDevice(state: boolean) {
     this.isAddDevice = state;
     // reset form add new device
@@ -53,7 +67,11 @@ export class HomeComponent implements OnInit {
   // get Data Device Owned
   getDataDeviceOwned() {
     // proses get data
-    this.api.getDataOwnedShared(localStorage.getItem('cIdUser'), '1', 'id_user').subscribe(response => {
+      const data = {
+        id_user: localStorage.getItem('cIdUser'),
+        level: 1
+      }
+      this.api.getDataOwnedShared(data).subscribe(response => {
       this.dataDeviceOwned = response.data;
       // loading mati
       this.loadingDataDeviceOwned = false;
@@ -61,6 +79,49 @@ export class HomeComponent implements OnInit {
       console.log(error);
       // loading mati
       this.loadingDataDeviceOwned = false;
+      // notif error
+      this.notif.error(error.message);
+    });
+  }
+
+  // get Data Device Shared
+  getDataDeviceSharedConfirm() {
+    // proses get data
+      const data = {
+        id_user: localStorage.getItem('cIdUser'),
+        level: 2,
+        is_confirm: '0'
+      }
+    this.api.getDataOwnedShared(data).subscribe(response => {
+      this.dataDeviceSharedConfirm = response.data;
+      // loading mati
+      this.loadingDataDeviceShared = false;
+    }, error => { // jika terjadi error
+      console.log(error);
+      // loading mati
+      this.loadingDataDeviceShared = false;
+      // notif error
+      this.notif.error(error.message);
+    });
+  }
+
+  // get Data Device Shared
+  getDataDeviceSharedNotConfirm() {
+    // proses get data
+      const data = {
+        id_user: localStorage.getItem('cIdUser'),
+        level: 2,
+        is_confirm: '1'
+      }
+    this.api.getDataOwnedShared(data).subscribe(response => {
+      this.dataDeviceSharedNotConfirm = response.data;
+      this.newShareDevice = response.totalItems;
+      // loading mati
+      this.loadingDataDeviceShared = false;
+    }, error => { // jika terjadi error
+      console.log(error);
+      // loading mati
+      this.loadingDataDeviceShared = false;
       // notif error
       this.notif.error(error.message);
     });
@@ -139,6 +200,9 @@ export class HomeComponent implements OnInit {
         }
         // refresh get data
         this.getDataDeviceOwned();
+        // refresh get data
+        this.getDataDeviceSharedConfirm();
+        this.getDataDeviceSharedNotConfirm();
       } else { // jika tidak
         // variabel untuk update
         const data = {
@@ -156,6 +220,9 @@ export class HomeComponent implements OnInit {
           if (responseUpdate.status == 1) {
             // refresh get data
             this.getDataDeviceOwned();
+            // refresh get data
+            this.getDataDeviceSharedConfirm();
+            this.getDataDeviceSharedNotConfirm();
             // tambahkan action ke record
               // variabel record
               const addRecord = {
@@ -185,6 +252,49 @@ export class HomeComponent implements OnInit {
     }, error => {
       console.log(error);
       // notif error
+      this.notif.error(error.message);
+    });
+  }
+
+  // delete device pada user yang di share
+  deleteDeviceUserShared(idAlat: string, idUser: string) {
+    // proses delete    
+    this.api.deleteStatusShare(idAlat, idUser).subscribe(response => {
+      if (response.status == 1) {
+        // get data device shared
+        this.getDataDeviceSharedConfirm();
+        this.getDataDeviceSharedNotConfirm();
+        // notif
+        this.notif.success(response.message);        
+      } else {
+        // notif
+        this.notif.error(response.message);                
+      }
+    }, error => {
+      // notif
+      this.notif.error(error.message);
+    });
+  }
+
+  // terima device share
+  acceptDeviceShared(idUserAlat) {
+    // proses
+    const data = {
+      id_user_alat: idUserAlat
+    }
+    this.api.acceptDeviceShare(data).subscribe(response => {
+      if (response.status == 1) {
+        // get data device shared
+        this.getDataDeviceSharedConfirm();
+        this.getDataDeviceSharedNotConfirm();
+        // notif
+        this.notif.success(response.message);        
+      } else {
+        // notif
+        this.notif.error(response.message);                
+      }
+    }, error => {
+      // notif
       this.notif.error(error.message);
     });
   }

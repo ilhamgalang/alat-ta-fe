@@ -1,13 +1,13 @@
 <app-navigation></app-navigation>
 
-<div class="container-fluid" *ngIf="!isAddDevice">
+<div class="container-fluid" *ngIf="!isAddDevice && !isShareConfirm">
   <!-- Content here -->
   
   <blockquote class="blockquote bq-info">
     <p class="bq-title"><i class="fa fa-desktop prefix mr-1"></i> My Device   
     </p>
   </blockquote>
-  <button type="button" class="btn btn-success waves-light" (click)="setIsAddDevice(true)" mdbWavesEffect><i class="fa fa-plus mr-1"></i> Add New Device</button>
+  <button type="button" size="sm" class="btn btn-success waves-light" (click)="setIsAddDevice(true)" mdbWavesEffect><i class="fa fa-plus mr-1"></i> Add New Device</button>
 
   <hr class="my-3">
 
@@ -27,6 +27,36 @@
           <mdb-card-title class="card-title text-center text-capitalize"> <h5>{{ data.nama_alat }}</h5> </mdb-card-title>
           <button mdbBtn color="success" block="true" type="button" *ngIf="data.status_on_off == 0" (click)="updateOnOff(data.id_alat, 1)" mdbWavesEffect>On</button>
           <button mdbBtn color="danger" block="true" type="button" *ngIf="data.status_on_off == 1" (click)="updateOnOff(data.id_alat, 0)" mdbWavesEffect>Off</button>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+  </div>
+
+
+  <blockquote class="blockquote bq-success">
+    <p class="bq-title"><i class="fa fa-desktop prefix mr-1"></i> Share Device
+    </p>
+  </blockquote>
+  <button type="button" class="btn btn-success waves-light" [matBadge]="newShareDevice" matBadgePosition="before" matBadgeColor="primary" (click)="setIsShareConfirm(true)" mdbWavesEffect>New Device Share</button>
+
+  <hr class="my-3">
+
+  <div class="row ld-over pb-3" style="min-height: 200px;" [ngClass]="{'running':loadingDataDeviceShared}">
+    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3" [ngClass]="{'d-none':loadingDataDeviceShared}" *ngFor="let dataShare of dataDeviceSharedConfirm; let i = index">
+      <!-- Card -->
+      <mdb-card>
+        <div class="view rgba-white-slight waves-light" mdbWavesEffect>
+          <!-- Card img -->
+          <mdb-card-img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Card image cap"></mdb-card-img>
+          <a> <div class="mask"></div> </a>
+        </div>
+        <!--Card content-->
+        <mdb-card-body>
+          <!--Title-->
+          <mdb-card-title class="card-title text-center text-capitalize"> <h5>{{ dataShare.nama_alat }}</h5> </mdb-card-title>
+          <button mdbBtn color="success" block="true" type="button" *ngIf="dataShare.status_on_off == 0" (click)="updateOnOff(dataShare.id_alat, 1)" mdbWavesEffect>On</button>
+          <button mdbBtn color="danger" block="true" type="button" *ngIf="dataShare.status_on_off == 1" (click)="updateOnOff(dataShare.id_alat, 0)" mdbWavesEffect>Off</button>
         </mdb-card-body>
       </mdb-card>
     </div>
@@ -58,9 +88,48 @@
         <button mdbBtn color="success" class="my-4 mx-auto d-block" type="submit" mdbWavesEffect><ngx-spinner size="small" type="line-scale-pulse-out"></ngx-spinner><i class="fa fa-plus prefix mr-1"></i>Add</button>
 
       </form>  
-      <!-- Sign up button -->
       <button mdbBtn color="warning" class="my-4 float-right" (click)="setIsAddDevice(false); getDataDeviceOwned()" type="button" mdbWavesEffect>Back</button>    
     </div>    
   </div>
 
+</div>
+
+<div class="container-fluid" *ngIf="isShareConfirm">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-8 col-lg-6 d-block mx-auto">
+      <div>          
+        <blockquote class="blockquote bq-success">
+          <p class="bq-title">New Device Shared With Me
+          </p>
+        </blockquote>
+        <ngx-datatable
+        class="material"
+        [rows]="dataDeviceSharedNotConfirm"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="'auto'"
+        [rowHeight]="'auto'"
+        [limit]="10">
+        <ngx-datatable-column name="Nama Alat">
+          <ng-template let-column="column" ngx-datatable-header-template>
+          {{ column.name }}
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.nama_alat }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Action" class="text-center">
+          <ng-template let-column="column" ngx-datatable-header-template>
+          {{ column.name }}
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <i class="fa fa-check prefix p-2 font-weight-bold green-text mx-2" style="cursor: pointer;" (click)="acceptDeviceShared(row.id_user_alat)"></i>
+            <i class="fa fa-remove prefix p-2 font-weight-bold red-text mx-2" style="cursor: pointer;" (click)="deleteDeviceUserShared(row.id_alat, row.id_user)"></i>
+          </ng-template>
+        </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+  <button mdbBtn color="warning" class="my-4 float-right" (click)="setIsShareConfirm(false); getDataDeviceOwned(); getDataDeviceSharedConfirm(); getDataDeviceSharedNotConfirm()" type="button" mdbWavesEffect>Back</button>    
 </div>
