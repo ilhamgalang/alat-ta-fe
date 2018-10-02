@@ -15,7 +15,7 @@ export class ListApiService {
   constructor(private http: HttpClient) {}
 
   // alamat (back end)
-  private api = 'http://192.168.1.7:69/tugas_akhir/alat-v0.10/';
+  private api = 'http://alat-ta-be.000webhostapp.com/';
 
   // Tabel User
   // cek data for login (user)
