@@ -12,13 +12,14 @@
   <hr class="my-3">
 
   <div class="row ld-over pb-3" style="min-height: 200px;" [ngClass]="{'running':loadingDataDeviceOwned}">
-    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+    <div class=" ld ld-loader" style="background-image:url(../../assets/gif/DoubleRing.gif); font-size:5em;"></div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3" [ngClass]="{'d-none':loadingDataDeviceOwned}" *ngFor="let data of dataDeviceOwned; let i = index">
       <!-- Card -->
       <mdb-card>
         <div class="view rgba-white-slight waves-light" mdbWavesEffect>
           <!-- Card img -->
-          <mdb-card-img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Card image cap"></mdb-card-img>
+          <mdb-card-img src="../../assets/img/off.png" *ngIf="data.status_on_off == 0" alt="Card image cap"></mdb-card-img>
+          <mdb-card-img src="../../assets/img/on.png" *ngIf="data.status_on_off == 1" alt="Card image cap"></mdb-card-img>
           <a> <div class="mask"></div> </a>
         </div>
         <!--Card content-->
@@ -42,13 +43,14 @@
   <hr class="my-3">
 
   <div class="row ld-over pb-3" style="min-height: 200px;" [ngClass]="{'running':loadingDataDeviceShared}">
-    <div class=" ld ld-loader" style="background-image:url(../../src/assets/gif/DoubleRing.gif); font-size:5em;"></div>
+    <div class=" ld ld-loader" style="background-image:url(../../assets/gif/DoubleRing.gif); font-size:5em;"></div>
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3" [ngClass]="{'d-none':loadingDataDeviceShared}" *ngFor="let dataShare of dataDeviceSharedConfirm; let i = index">
       <!-- Card -->
       <mdb-card>
         <div class="view rgba-white-slight waves-light" mdbWavesEffect>
           <!-- Card img -->
-          <mdb-card-img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Card image cap"></mdb-card-img>
+          <mdb-card-img src="../../assets/img/off.png" *ngIf="dataShare.status_on_off == 0" alt="Card image cap"></mdb-card-img>
+          <mdb-card-img src="../../assets/img/on.png" *ngIf="dataShare.status_on_off == 1" alt="Card image cap"></mdb-card-img>
           <a> <div class="mask"></div> </a>
         </div>
         <!--Card content-->
