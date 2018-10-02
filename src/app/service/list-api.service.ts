@@ -15,7 +15,7 @@ export class ListApiService {
   constructor(private http: HttpClient) {}
 
   // alamat (back end)
-  private api = 'https://alat-ta-be.000webhostapp.com/';
+  private api = 'http://alat-ta-be.000webhostapp.com/';
 
   // Tabel User
   // cek data for login (user)

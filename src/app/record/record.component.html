@@ -3,7 +3,7 @@
 <div class="container-fluid">
 
   <blockquote class="blockquote bq-info">
-    <p class="bq-title">Record</p>
+    <p class="bq-title"><i class="fa fa-tasks prefix mr-1"></i> Record</p>
   </blockquote> 
   
 	<div class="row mb-3" *ngIf="!loadingDataStatistik">
@@ -14,7 +14,7 @@
 				</h3>
 				<ngx-datatable
 				class="material"
-				[rows]="dataStatistik.data"
+				[rows]="dataStatistik['data']"
 				[columnMode]="'force'"
 				[headerHeight]="50"
 				[footerHeight]="'auto'"
@@ -36,14 +36,6 @@
 						{{ row.time_duration }}
 					</ng-template>
 				</ngx-datatable-column>
-				<ngx-datatable-column name="Action">
-					<ng-template let-column="column" ngx-datatable-header-template>
-					{{ column.name }}
-					</ng-template>
-					<ng-template let-row="row" ngx-datatable-cell-template>
-						<div class="font-weight-bold blue-text">Details</div>						
-					</ng-template>
-				</ngx-datatable-column>
 				</ngx-datatable>
 			</div>
 		</div>
@@ -57,7 +49,7 @@
 				</h3>
 				<ngx-datatable
 				class="material"
-				[rows]="dataRecord.data"
+				[rows]="dataRecord['data']"
 				[columnMode]="'force'"
 				[headerHeight]="50"
 				[footerHeight]="'auto'"
