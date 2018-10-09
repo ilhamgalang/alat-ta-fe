@@ -15,7 +15,8 @@ export class ListApiService {
   constructor(private http: HttpClient) {}
 
   // alamat (back end)
-  private api = 'http://192.168.1.7:69/tugas_akhir/alat-v0.10/';
+  private api = 'https://alat-ta-be.herokuapp.com/';
+  // private api = 'http://192.168.1.7:69/tugas_akhir/alat-v0.10/';
 
   // Tabel User
   // cek data for login (user)
